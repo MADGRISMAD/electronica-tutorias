@@ -6,5 +6,13 @@ module.exports = {
       filename: 'app.bundle.js'
     },
     mode: 'development',
-    target: 'node' 
+    target: 'node',
+    module: {
+      rules: [
+        {
+          test: /\.node$/,
+          use: ['raw-loader']
+        }
+      ]
+    }
   };
