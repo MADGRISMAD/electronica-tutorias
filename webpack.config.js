@@ -7,6 +7,12 @@ module.exports = {
     },
     mode: 'development',
     target: 'node',
+    experiments: {
+      topLevelAwait: true,
+    },
+    node: {
+      __dirname: false,
+    },
     module: {
       rules: [
         {

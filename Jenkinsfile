@@ -43,6 +43,7 @@ EOF"""
                 server { \
                     listen $PORT; \
                     location / { \
+                        autoindex on; \
                         root /app; \
                     } \
                 } \
