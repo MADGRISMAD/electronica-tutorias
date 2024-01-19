@@ -37,9 +37,16 @@ EOF"""
         stage('Create docker image') {
             steps {
                 sh '''cat <<EOF > Dockerfile
-                FROM httpd
-                COPY dist/* /usr/local/apache2/htdocs/
-                EXPOSE 80
+                FROM nginx:alpine
+                RUN echo """ \
+                server { \
+                    listen 80; \
+                    location / { \
+                        root /app; \
+                    } \
+                } \
+                """ > /etc/nginx/conf.d/default.conf
+                COPY dist/ /app
 EOF'''
                 script {
                     app = docker.build("${NEXUS_REPO}/backend")

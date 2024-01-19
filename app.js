@@ -15,6 +15,8 @@ const dataOrigin = require('./db/mongodb');
 
 app.listen(3001 | process.env.PORT, () => console.log('Listening on port ' + process.env.PORT));
 
-
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 
 module.exports = app;
