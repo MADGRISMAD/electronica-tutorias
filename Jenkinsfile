@@ -10,13 +10,13 @@ pipeline {
         stage('Fetch and install') {
             steps {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'backend'
-                sh """
-                #!/bin/sh
+//                 sh """
+//                 #!/bin/sh
 
-                cat <<EOF > .env
-                PORT=${PORT}
-                MONGODB_URI_DEV=${MONGODB_URI_DEV}
-EOF"""
+//                 cat <<EOF > .env
+//                 PORT=${PORT}
+//                 MONGODB_URI_DEV=${MONGODB_URI_DEV}
+// EOF"""
                 withNPM(npmrcConfig: npmrcConfig) {
                     sh 'npm install'
                 }
@@ -36,20 +36,17 @@ EOF"""
         }
         stage('Create docker image') {
             steps {
-                sh '''cat <<EOF > Dockerfile
-                FROM nginx:alpine
+                sh """cat <<EOF > Dockerfile
+                FROM node:18.18.0
                 ENV PORT=${PORT}
-                RUN echo """ \
-                server { \
-                    listen $PORT; \
-                    location / { \
-                        autoindex on; \
-                        root /app; \
-                    } \
-                } \
-                """ > /etc/nginx/conf.d/default.conf
+                ENV MONGODB_URI_DEV=${MONGODB_URI_DEV}
                 COPY dist/ /app
-EOF'''
+                WORKDIR /app
+
+                EXPOSE 3001
+
+                CMD ["node", "app.bundle.js"]
+EOF"""
                 script {
                     app = docker.build("${NEXUS_REPO}/backend")
                 }
