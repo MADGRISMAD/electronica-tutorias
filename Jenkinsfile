@@ -1,8 +1,10 @@
 pipeline {
     agent any
     environment {
-        nodejs = 'NodeJS18.19'
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
+        NEXUS_HOST = 'http://192.168.56.10:8082'
+        NEXUS_REPO = 'repository/tutorias'
+        // NEXUS_CREDENTIALS = credentials('nexusJenkins')
     }
     stages {
         stage('Fetch and install') {
@@ -32,42 +34,59 @@ EOF"""
                 echo 'Testing due'
             }
         }
-        stage('Store artifact') {
+        stage('Create docker image') {
             steps {
-                echo 'Deploying the app (pending)'
+                sh '''cat <<EOF > Dockerfile
+                FROM httpd
+                COPY dist/* /usr/local/apache2/htdocs/
+                EXPOSE 80
+EOF'''
+                script {
+                    app = docker.build("${NEXUS_REPO}/backend")
+                }
             }
         }
-    }
-    post {
-        success {
-            nexusArtifactUploader(
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                nexusUrl: '192.168.56.10:8081',
-                groupId: 'com.electronica.tutorias',
-                version: BUILD_NUMBER,
-                repository: 'backend_tutorias',
-                credentialsId: 'nexusLogin',
-                artifacts: [
-                    [artifactId: "backend-tutorias-${BUILD_TIMESTAMP}",
-                    file: 'dist/app.bundle.js',
-                    type: 'js']
-                ]
-            )
-            nexusArtifactUploader(
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                nexusUrl: '192.168.56.10:8081',
-                groupId: 'com.electronica.tutorias',
-                version: 'Latest',
-                repository: 'backend_tutorias',
-                credentialsId: 'nexusLogin',
-                artifacts: [
-                    [artifactId: "Latest",
-                    file: 'dist/app.bundle.js',
-                    type: 'js']
-                ]
-            )
+        stage('Push artifact') {
+            steps {
+                script {
+                    docker.withRegistry("${NEXUS_HOST}") {
+                        app.push("${BUILD_NUMBER}")
+                        app.push()
+                    }
+                }
+            }
+        // steps {
+        //             success {
+        //         nexusArtifactUploader(
+        //     nexusVersion: 'nexus3',
+        //     protocol: 'http',
+        //     nexusUrl: '192.168.56.10:8081',
+        //     groupId: 'com.electronica.tutorias',
+        //     version: BUILD_NUMBER,
+        //     repository: 'backend_tutorias',
+        //     credentialsId: 'nexusLogin',
+        //     artifacts: [
+        //         [artifactId: "backend-tutorias-${BUILD_TIMESTAMP}",
+        //         file: 'dist/app.bundle.js',
+        //         type: 'js']
+        //     ]
+        // )
+        //         nexusArtifactUploader(
+        //     nexusVersion: 'nexus3',
+        //     protocol: 'http',
+        //     nexusUrl: '192.168.56.10:8081',
+        //     groupId: 'com.electronica.tutorias',
+        //     version: 'Latest',
+        //     repository: 'backend_tutorias',
+        //     credentialsId: 'nexusLogin',
+        //     artifacts: [
+        //         [artifactId: 'Latest',
+        //         file: 'dist/app.bundle.js',
+        //         type: 'js']
+        //     ]
+        // )
+        //             }
+        // }
         }
     }
 }
