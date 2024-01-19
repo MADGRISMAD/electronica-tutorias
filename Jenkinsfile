@@ -38,9 +38,10 @@ EOF"""
             steps {
                 sh '''cat <<EOF > Dockerfile
                 FROM nginx:alpine
+                ENV PORT=${PORT}
                 RUN echo """ \
                 server { \
-                    listen 80; \
+                    listen $PORT; \
                     location / { \
                         root /app; \
                     } \
