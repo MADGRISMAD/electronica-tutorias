@@ -2,21 +2,13 @@ pipeline {
     agent any
     environment {
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
-        NEXUS_HOST = 'http://192.168.56.10:8082'
-        NEXUS_REPO = 'repository/tutorias'
-        // NEXUS_CREDENTIALS = credentials('nexusJenkins')
+        ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
+        MONGODB_URI_DEV = credentials('MONGO_URI_DEV')
     }
     stages {
         stage('Fetch and install') {
             steps {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'backend'
-//                 sh """
-//                 #!/bin/sh
-
-//                 cat <<EOF > .env
-//                 PORT=${PORT}
-//                 MONGODB_URI_DEV=${MONGODB_URI_DEV}
-// EOF"""
                 withNPM(npmrcConfig: npmrcConfig) {
                     sh 'npm install'
                 }
@@ -38,8 +30,8 @@ pipeline {
             steps {
                 sh """cat <<EOF > Dockerfile
                 FROM node:18.18.0
-                ENV PORT=${PORT}
-                ENV MONGODB_URI_DEV=${MONGODB_URI_DEV}
+                ENV PORT=3001
+                ENV MONGODB_URI_DEV=$MONGODB_URI_DEV
                 COPY dist/ /app
                 WORKDIR /app
 
@@ -48,51 +40,25 @@ pipeline {
                 CMD ["node", "app.bundle.js"]
 EOF"""
                 script {
-                    app = docker.build("${NEXUS_REPO}/backend")
+                    app = docker.build('tutorias_backend')
                 }
             }
         }
         stage('Push artifact') {
             steps {
                 script {
-                    docker.withRegistry("${NEXUS_HOST}") {
-                        app.push("${BUILD_NUMBER}")
+                    docker.withRegistry("${ECR_HOST}") {
                         app.push()
                     }
                 }
             }
-        // steps {
-        //             success {
-        //         nexusArtifactUploader(
-        //     nexusVersion: 'nexus3',
-        //     protocol: 'http',
-        //     nexusUrl: '192.168.56.10:8081',
-        //     groupId: 'com.electronica.tutorias',
-        //     version: BUILD_NUMBER,
-        //     repository: 'backend_tutorias',
-        //     credentialsId: 'nexusLogin',
-        //     artifacts: [
-        //         [artifactId: "backend-tutorias-${BUILD_TIMESTAMP}",
-        //         file: 'dist/app.bundle.js',
-        //         type: 'js']
-        //     ]
-        // )
-        //         nexusArtifactUploader(
-        //     nexusVersion: 'nexus3',
-        //     protocol: 'http',
-        //     nexusUrl: '192.168.56.10:8081',
-        //     groupId: 'com.electronica.tutorias',
-        //     version: 'Latest',
-        //     repository: 'backend_tutorias',
-        //     credentialsId: 'nexusLogin',
-        //     artifacts: [
-        //         [artifactId: 'Latest',
-        //         file: 'dist/app.bundle.js',
-        //         type: 'js']
-        //     ]
-        // )
-        //             }
-        // }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    sh "aws ecs update-service --region us-west-1 --cluster tutorias --service backend --force-new-deployment"
+                }
+            }
         }
     }
 }
