@@ -4,6 +4,7 @@ pipeline {
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
         MONGODB_URI_DEV = credentials('MONGO_URI_DEV')
+        SECRET = credentials('SECRET')
     }
     stages {
         stage('Fetch and install') {
@@ -32,6 +33,7 @@ pipeline {
                 FROM node:18.18.0
                 ENV PORT=3001
                 ENV MONGODB_URI_DEV=$MONGODB_URI_DEV
+                ENV SECRET=$SECRET
                 COPY dist/ /app
                 WORKDIR /app
 
@@ -56,7 +58,7 @@ EOF"""
         stage('Deploy') {
             steps {
                 script {
-                    sh "aws ecs update-service --region us-west-1 --cluster tutorias --service backend --force-new-deployment"
+                    sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service backend --force-new-deployment'
                 }
             }
         }
