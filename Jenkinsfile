@@ -29,18 +29,6 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                sh """cat <<EOF > Dockerfile
-                FROM node:18.18.0
-                ENV PORT=3001
-                ENV MONGODB_URI_DEV=$MONGODB_URI_DEV
-                ENV SECRET=$SECRET
-                COPY dist/ /app
-                WORKDIR /app
-
-                EXPOSE 3001
-
-                CMD ["node", "app.bundle.js"]
-EOF"""
                 script {
                     app = docker.build('tutorias_backend')
                 }
