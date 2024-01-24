@@ -18,6 +18,10 @@ module.exports = {
         {
           test: /\.node$/,
           use: ['raw-loader']
+        },
+        {
+            test: /\.html$/,
+            use: ['html-loader']
         }
       ]
     }
