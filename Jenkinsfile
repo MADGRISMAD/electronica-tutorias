@@ -46,7 +46,7 @@ pipeline {
                 // ]]){
 
                     docker.withRegistry("${ECR_HOST}") {
-                        app.push()
+                        app.push("latest")
                     }
                 }
             }
