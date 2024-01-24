@@ -28,16 +28,16 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                sh '''cat <<EOF > nginx.conf
-                server {
-                    listen 8081;
-                    location / {
-                        root /app;
+//                 sh '''cat <<EOF > nginx.conf
+//                 server {
+//                     listen 8081;
+//                     location / {
+//                         root /app;
 
-                    }
-                }
-EOF
-                '''
+//                     }
+//                 }
+// EOF
+//                 '''
                 sh '''cat <<EOF > Dockerfile
                 FROM nginx:alpine
                 COPY dist/ /app
