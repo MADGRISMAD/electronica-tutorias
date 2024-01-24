@@ -72,19 +72,15 @@ export default {
   methods: {
     async login() {
       try {
-        // Realiza la petición al backend utilizando la información en this.formData
-        // Puedes usar axios u otra librería para hacer la petición HTTP
-
-        // Ejemplo con axios:
+        
         const response = await axios.post('/api/login', this.formData);
 
-        // Manejar la respuesta del backend según tus necesidades
-        // Por ahora, simplemente imprimo la respuesta en la consola
+        
         console.log('Respuesta del backend:', response);
 
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
-        // Puedes agregar lógica para mostrar un mensaje de error al usuario
+        
       }
     }
   }
