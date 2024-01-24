@@ -8,7 +8,6 @@ pipeline {
         stage('Fetch and install') {
             steps {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
-                    sh 'cd frontend/tutorias-front-end'
                 withNPM(npmrcConfig: npmrcConfig) {
                     sh 'npm install'
                 }
