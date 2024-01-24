@@ -3,6 +3,7 @@ pipeline {
     environment {
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
+        DISCORD_WEBHOOK = credentials('discordWebhook')
     }
     stages {
         stage('Fetch and install') {
@@ -64,6 +65,14 @@ EOF'''
                     sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
                 }
             }
+        }
+    }
+    post {
+        success {
+            discordSend description: 'Build successfull!!', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
+        }
+        failure {
+            discordSend description: 'Build failed', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
         }
     }
 }
