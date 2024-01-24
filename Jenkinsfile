@@ -5,6 +5,7 @@ pipeline {
         ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
         MONGODB_URI_DEV = credentials('MONGO_URI_DEV')
         SECRET = credentials('SECRET')
+        DISCORD_WEBHOOK = credentials('discordWebhook')
     }
     stages {
         stage('Fetch and install') {
