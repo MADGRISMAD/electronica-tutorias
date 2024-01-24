@@ -49,4 +49,8 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
+app.post("api/login", (req, res) => {
+    res.status(200).json({ message: "Login successful" });
+});
+
 module.exports = app;
