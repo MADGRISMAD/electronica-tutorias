@@ -47,29 +47,34 @@ pipeline {
                     docker.withRegistry(ECR_HOST) {
                         app.push('latest')
                     }
-                        }
+                    }
                 }
             }
         stage('Deploy') {
             steps {
                 script {
                     sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service tutorias_stack --force-new-deployment"
+                // Get public IP from AWS
+                }
+            }
+        }
+        stage('Notify Discord') {
+            steps{
+                script{
+                    discordSend description: 'Build successfull!!, sending new IP...', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
+
+                    def taskId = sh(returnStdout: true, script: "aws ecs list-tasks --cluster tutorias --service-name tutorias_stack --query 'taskArns[0]' --output text").trim()
+                    def networkId = sh(returnStdout: true, script: "aws ecs describe-tasks --cluster tutorias --tasks '$taskId' --query 'tasks[0].containers[0].networkInterfaces[0].attachmentId' --output text").trim()
+                    def publicIp = sh(returnStdout: true, script: "aws ec2 describe-network-interfaces --filters 'Name=description,Values=*$networkId*' --query 'NetworkInterfaces[0].Association.PublicIp' --output text").trim()
+                    sleep(30)
+                    // Send IP to discord
+                    discordSend description: "New IP: $publicIp", footer: 'Port 8081', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
+
                 }
             }
         }
         }
     post {
-        success {
-            discordSend description: 'Build successfull!!, sending new IP...', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
-            sleep(30)
-            // Get public IP from AWS
-            taskId = sh(script: "aws ecs list-tasks --cluster tutorias --service-name tutorias_stack --query 'taskArns[0]' --output text")
-            networkId = sh(script: "aws ecs describe-tasks --cluster tutorias --tasks '$taskId' --query 'tasks[0].containers[0].networkInterfaces[0].attachmentId' --output text")
-            publicIp = sh(script: "aws ec2 describe-network-interfaces --filters 'Name=description,Values=*$networkId*' --query 'NetworkInterfaces[0].Association.PublicIp' --output text")
-
-            // Send IP to discord
-            discordSend description: "New IP: $publicIp", footer: "Port 8081", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
-        }
         failure {
             discordSend description: 'Build failed', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
         }
