@@ -53,7 +53,7 @@ pipeline {
         stage('Push artifact') {
             steps {
                 script {
-                    docker.withRegistry("${ECR_HOST}") {
+                    docker.withRegistry("${ECR_HOST}", 'ecr:us-west-1:JenkinsAWS') {
                         app.push('latest')
                     }
                 }
