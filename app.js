@@ -9,7 +9,7 @@ const env = require("dotenv").config();
 // const dataOrigin = require('./db/mongodb');
 
 // CORS SECTION
-const whitelist = ["http://172.31.22.8:8081", "http://localhost"];
+const whitelist = ["http://172.31.22.8:8081", "http://localhost", "http://frontend"];
 
 corsOptions = {
     origin: function (origin, callback) {
