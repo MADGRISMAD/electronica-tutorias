@@ -33,7 +33,7 @@ pipeline {
         stage('Create docker image') {
             steps {
                 script {
-                    app = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV=${MONGODB_URI_DEV} --build-arg SECRET=${SECRET} .")
+                    app = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV=${MONGODB_URI_DEV} --build-arg SECRET=${SECRET} -f Dockerfile .")
                 }
             }
         }
@@ -46,11 +46,11 @@ pipeline {
                 // ]]){
 
                     docker.withRegistry("${ECR_HOST}") {
-                        app.push("latest")
+                        app.push('latest')
                     }
                 }
+                }
             }
-        }
         stage('Deploy') {
             steps {
                 script {
@@ -58,7 +58,7 @@ pipeline {
                 }
             }
         }
-    }
+        }
     post {
         success {
             discordSend description: 'Build successfull!!', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
@@ -67,4 +67,4 @@ pipeline {
             discordSend description: 'Build failed', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
         }
     }
-}
+    }
