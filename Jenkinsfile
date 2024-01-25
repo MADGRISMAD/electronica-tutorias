@@ -54,7 +54,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh "aws ecs update-service --region ${AWS_DEFAULT_REGION} --cluster tutorias --service backend --force-new-deployment"
+                    sh "aws ecs update-service --region ${AWS_DEFAULT_REGION} --cluster tutorias --service tutorias_stack --task-definition backend --force-new-deployment"
                 }
             }
         }
