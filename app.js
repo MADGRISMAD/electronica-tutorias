@@ -11,17 +11,21 @@ const env = require("dotenv").config();
 // CORS SECTION
 const whitelist = ["http://172.31.22.8:8081", "http://localhost", "http://frontend"];
 
+// corsOptions = {
+//     origin: function (origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1 || !origin) {
+//             console.log("origin: ", origin);
+//             callback(null, true);
+//         } else {
+//             console.log("origin: ", origin);
+//             callback(new Error("Not allowed by CORS"));
+//         }
+//     },
+// };
 corsOptions = {
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            console.log("origin: ", origin);
-            callback(null, true);
-        } else {
-            console.log("origin: ", origin);
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-};
+    origin: '*',
+}
+
 app.use(cors(corsOptions));
 
 // ROUTER SECTION
