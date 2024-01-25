@@ -44,7 +44,7 @@ pipeline {
                     //     $class: 'AmazonWebServicesCredentialsBinding',
                     //     credentialsId: 'JenkinsAWS'
                     // ]]) {
-                    docker.withRegistry(ECR_HOST) {
+                    docker.withRegistry(ECR_HOST, 'ecr:us-west-1:JenkinsAWS') {
                         app.push('latest')
                     }
                     }
