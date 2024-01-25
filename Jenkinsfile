@@ -38,13 +38,13 @@ pipeline {
 //                 }
 // EOF
 //                 '''
-                sh '''cat <<EOF > Dockerfile
-                FROM nginx:alpine
-                COPY dist/ /app
-                COPY nginx.conf /etc/nginx/conf.d/default.conf
-                EXPOSE 8081
-                CMD ["nginx", "-g", "daemon off;"]
-EOF'''
+//                 sh '''cat <<EOF > Dockerfile
+//                 FROM nginx:alpine
+//                 COPY dist/ /app
+//                 COPY nginx.conf /etc/nginx/conf.d/default.conf
+//                 EXPOSE 8081
+//                 CMD ["nginx", "-g", "daemon off;"]
+// EOF'''
                 script {
                     app = docker.build('tutorias_frontend')
                 }
@@ -62,7 +62,7 @@ EOF'''
         stage('Deploy') {
             steps {
                 script {
-                    sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
+                    sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service tutorias_stack --force-new-deployment'
                 }
             }
         }
