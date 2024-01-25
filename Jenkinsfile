@@ -73,8 +73,10 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Build frontend'){
-            build job: 'paac_frontend'
+        stage('Build frontend') {
+            steps {
+                build job: 'paac_frontend'
+            }
         }
         }
     post {
