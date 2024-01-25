@@ -33,7 +33,7 @@ pipeline {
         stage('Create docker image') {
             steps {
                 script {
-                    app = docker.build('tutorias_backend')
+                    app = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV=${MONGODB_URI_DEV} --build-arg SECRET=${SECRET} .")
                 }
             }
         }
