@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     async login() {
-      try {
+      // try {
         
         const response = await axios.post('http://backend:3001/api/login', this.formData);
         const response1 = await axios.post('http://backend.electronica-tutorias-ns:3001/api/login', this.formData);
@@ -96,10 +96,10 @@ export default {
         console.log('Respuesta del backend:', response8);
         console.log('Respuesta del backend:', response9);
 
-      } catch (error) {
-        console.error('Error al iniciar sesión:', error);
+      // } catch (error) {
+      //   console.error('Error al iniciar sesión:', error);
         
-      }
+      // }
     }
   }
 }
