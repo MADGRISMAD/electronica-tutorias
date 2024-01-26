@@ -73,8 +73,17 @@ export default {
     async login() {
       try {
         
-        const response = await axios.post('http://electronica-tutorias-ns:3001/api/login', this.formData);
-
+        const response = await axios.post('http://backend:3001/api/login', this.formData);
+        const response1 = await axios.post('http://backend.electronica-tutorias-ns:3001/api/login', this.formData);
+        const response2 = await axios.post('http://backend.electronica-tutorias-ns.svc:3001/api/login', this.formData);
+        const response3 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster:3001/api/login', this.formData);
+        const response4 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local:3001/api/login', this.formData);
+        
+        const response5 = await axios.post('http://backend/api/login', this.formData);
+        const response6 = await axios.post('http://backend.electronica-tutorias-ns/api/login', this.formData);
+        const response7 = await axios.post('http://backend.electronica-tutorias-ns.svc/api/login', this.formData);
+        const response8 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster/api/login', this.formData);
+        const response9 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local/api/login', this.formData);
         
         console.log('Respuesta del backend:', response);
 
