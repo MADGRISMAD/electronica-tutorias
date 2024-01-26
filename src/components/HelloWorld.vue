@@ -73,26 +73,11 @@ export default {
     async login() {
       // try {
         
-        const response1 = axios.post('http://backend.electronica-tutorias-ns:3001/api/login', this.formData);
-        const response2 = axios.post('http://backend.electronica-tutorias-ns.svc:3001/api/login', this.formData);
-        const response3 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster:3001/api/login', this.formData);
-        const response4 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local:3001/api/login', this.formData);
-        
-        const response5 = axios.post('http://backend/api/login', this.formData);
-        const response6 = axios.post('http://backend.electronica-tutorias-ns/api/login', this.formData);
-        const response7 = axios.post('http://backend.electronica-tutorias-ns.svc/api/login', this.formData);
-        const response8 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster/api/login', this.formData);
-        const response9 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local/api/login', this.formData);
-        
-        console.log('Respuesta del backend:', response1);
-        console.log('Respuesta del backend:', response2);
-        console.log('Respuesta del backend:', response3);
-        console.log('Respuesta del backend:', response4);
-        console.log('Respuesta del backend:', response5);
-        console.log('Respuesta del backend:', response6);
-        console.log('Respuesta del backend:', response7);
-        console.log('Respuesta del backend:', response8);
-        console.log('Respuesta del backend:', response9);
+        const response = axios.post('http://backend.electronica-tutorias-ns/api/login', this.formData);
+        console.log(axios.get('http://backend.electronica-tutorias-ns'));
+        console.log(axios.get('http://backend.default'));
+        console.log(axios.get('http://backend.default.svc.cluster.local'));
+        console.log('Respuesta del backend:', response);
 
       // } catch (error) {
       //   console.error('Error al iniciar sesión:', error);
