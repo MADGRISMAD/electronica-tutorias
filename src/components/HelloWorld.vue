@@ -78,11 +78,11 @@ export default {
         const response3 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster:3001/api/login', this.formData);
         const response4 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local:3001/api/login', this.formData);
         
-        const response5 = await axios.post('http://backend/api/login', this.formData);
-        const response6 = await axios.post('http://backend.electronica-tutorias-ns/api/login', this.formData);
-        const response7 = await axios.post('http://backend.electronica-tutorias-ns.svc/api/login', this.formData);
-        const response8 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster/api/login', this.formData);
-        const response9 = await axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local/api/login', this.formData);
+        const response5 = axios.post('http://backend/api/login', this.formData);
+        const response6 = axios.post('http://backend.electronica-tutorias-ns/api/login', this.formData);
+        const response7 = axios.post('http://backend.electronica-tutorias-ns.svc/api/login', this.formData);
+        const response8 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster/api/login', this.formData);
+        const response9 = axios.post('http://backend.electronica-tutorias-ns.svc.cluster.local/api/login', this.formData);
         
         console.log('Respuesta del backend:', response1);
         console.log('Respuesta del backend:', response2);
