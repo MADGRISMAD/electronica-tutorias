@@ -23,7 +23,7 @@ const whitelist = ["http://172.31.22.8:8081", "http://localhost", "http://fronte
 //     },
 // };
 corsOptions = {
-    origin: '*',
+    origin: true,
 }
 
 app.use(cors(corsOptions));
