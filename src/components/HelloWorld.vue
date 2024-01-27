@@ -71,18 +71,18 @@ export default {
   },
   methods: {
     async login() {
-    //   try {
+      try {
         // axios.get('http://localhost:8081');
-        const response = await axios.post('http://backend:3001/api/login', this.formData);
+        const response = await axios.get('http://localhost:8081/');
         // console.log(axios.post('http://backend:3001/api/login', this.formData));
         // console.log(axios.get('http://backend:3001/', this.formData));
         
         console.log('Respuesta del backend:', response);
 
-    //   } catch (error) {
-        // console.error('Error al iniciar sesión:', error);
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
         
-    //   }
+      }
     }
   }
 }
