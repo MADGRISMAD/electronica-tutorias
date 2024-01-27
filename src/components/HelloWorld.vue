@@ -74,19 +74,11 @@ export default {
       // try {
         
           console.log(axios.get('https://localhost:8081'));
-        const response = axios.post('https://backend.electronica-tutorias-ns:3001/api/login', this.formData);
-        console.log(axios.get('https://backend.electronica-tutorias-ns:3001'));
-        console.log(axios.get('https://backend:3001'));
-        console.log(axios.get('https://backend.default:3001'));
-        console.log(axios.get('https://backend.default.svc.cluster.local:3001'));
-        console.log(axios.get('https://backend.electronica-tutorias-ns.awsappmesh-serviceconnect.svc.cluster.local:3001'));
+        const response = axios.post('https://backend.tutorias.local:3001/api/login', this.formData);
+        console.log(axios.get('http://backend.tutorias.local:3001', this.formData));
+        console.log(axios.get('http://backend.tutorias.local', this.formData));
+        console.log(axios.get('http://backend.tutorias:3001', this.formData));
         
-        console.log(axios.post('https://backend.electronica-tutorias-ns/api/login', this.formData));
-        console.log(axios.get('https://backend.electronica-tutorias-ns'));
-        console.log(axios.get('https://backend'));
-        console.log(axios.get('https://backend.default'));
-        console.log(axios.get('https://backend.default.svc.cluster.local'));
-        console.log(axios.get('https://backend.electronica-tutorias-ns.awsappmesh-serviceconnect.svc.cluster.local'));
         console.log('Respuesta del backend:', response);
 
       // } catch (error) {
