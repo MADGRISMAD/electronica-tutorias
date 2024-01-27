@@ -80,7 +80,9 @@
 
 
 <script>
+import axios from "axios";
 export default {
+
   name: 'HelloWorld',
   data() {
     return {
@@ -101,24 +103,24 @@ export default {
         }
 
         // Descomentar la línea siguiente cuando estés listo para probar con el backend real
-        // const response = await axios.post('/api/login', this.formData);
+        const response = await axios.get('http://backend:3001');
 
         // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
-        const fakeApiResponse = {
-          status: 200,
-          data: {
-            token: 'tu_token_simulado',
-            usuario: {
-              nombre: 'Usuario Simulado',
-              email: 'usuario@simulado.com'
-            }
-          }
-        };
+        // const fakeApiResponse = {
+        //   status: 200,
+        //   data: {
+        //     token: 'tu_token_simulado',
+        //     usuario: {
+        //       nombre: 'Usuario Simulado',
+        //       email: 'usuario@simulado.com'
+        //     }
+        //   }
+        // };
 
-        if (fakeApiResponse.status === 200) {
-          console.log('Inicio de sesión exitoso. Respuesta simulada del backend:', fakeApiResponse.data);
+        if (response.status === 200) {
+          console.log('Inicio de sesión exitoso. Respuesta simulada del backend:', response.data);
         } else {
-          console.warn('El backend simulado respondió con un código de estado no esperado:', fakeApiResponse.status);
+          console.warn('El backend simulado respondió con un código de estado no esperado:', response.status);
         }
       } catch (error) {
         console.error('Error al iniciar sesión:', error.message);
