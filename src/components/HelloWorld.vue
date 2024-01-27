@@ -55,9 +55,6 @@
 </template>
 
 <script>
-// Importa la librería Axios si aún no lo has hecho
-import axios from 'axios';
-
 export default {
   name: 'HelloWorld',
   data() {
@@ -72,17 +69,43 @@ export default {
   methods: {
     async login() {
       try {
-        
-        const response = await axios.post('/api/login', this.formData);
+        // Validaciones de formulario
+        if (!this.formData.numeroDeControl || !this.formData.contrasena) {
+          console.warn('Por favor, completa todos los campos del formulario.');
+          return;
+        }
 
-        
-        console.log('Respuesta del backend:', response);
+        // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
+        const fakeApiResponse = {
+          status: 200,
+          data: {
+            token: 'tu_token_simulado',
+            usuario: {
+              nombre: 'Usuario Simulado',
+              email: 'usuario@simulado.com'
+              
+            }
+          }
+        };
 
+        // Comentar la línea siguiente cuando estés listo para probar con el backend real
+        const response = fakeApiResponse;
+
+        // Descomentar la línea siguiente cuando estés listo para probar con el backend real
+        // const response = await axios.post('/api/login', this.formData);
+
+        if (response.status === 200) {
+          console.log('Inicio de sesión exitoso. Respuesta simulada del backend:', response.data);
+
+          
+        } else {
+          console.warn('El backend simulado respondió con un código de estado no esperado:', response.status);
+        }
       } catch (error) {
-        console.error('Error al iniciar sesión:', error);
-        
+        console.error('Error al iniciar sesión:', error.message);
       }
     }
   }
 }
+
 </script>
