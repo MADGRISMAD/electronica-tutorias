@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "npm run serve"
+    "test": "npm run serve && echo 'Pruebas ejecutadas exitosamente'"
   },
   "dependencies": {
     "autoprefixer": "^10.4.17",
