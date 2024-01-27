@@ -71,20 +71,18 @@ export default {
   },
   methods: {
     async login() {
-      // try {
-        
-          console.log(axios.get('https://localhost:8081'));
-        const response = axios.post('https://backend.tutorias.local:3001/api/login', this.formData);
-        console.log(axios.get('http://backend.tutorias.local:3001', this.formData));
-        console.log(axios.get('http://backend.tutorias.local', this.formData));
-        console.log(axios.get('http://backend.tutorias:3001', this.formData));
+    //   try {
+        axios.get('http://localhost:8081');
+        const response = axios.post('http://backend:3001/api/login', this.formData);
+        console.log(axios.post('http://backend:3001/api/login', this.formData));
+        console.log(axios.get('http://backend:3001/', this.formData));
         
         console.log('Respuesta del backend:', response);
 
-      // } catch (error) {
-      //   console.error('Error al iniciar sesión:', error);
+    //   } catch (error) {
+        // console.error('Error al iniciar sesión:', error);
         
-      // }
+    //   }
     }
   }
 }
