@@ -72,10 +72,10 @@ export default {
   methods: {
     async login() {
     //   try {
-        axios.get('http://localhost:8081');
-        const response = axios.post('http://backend:3001/api/login', this.formData);
-        console.log(axios.post('http://backend:3001/api/login', this.formData));
-        console.log(axios.get('http://backend:3001/', this.formData));
+        // axios.get('http://localhost:8081');
+        const response = await axios.post('http://backend:3001/api/login', this.formData);
+        // console.log(axios.post('http://backend:3001/api/login', this.formData));
+        // console.log(axios.get('http://backend:3001/', this.formData));
         
         console.log('Respuesta del backend:', response);
 
