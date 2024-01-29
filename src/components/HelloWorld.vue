@@ -103,7 +103,7 @@ export default {
         }
 
         // Descomentar la línea siguiente cuando estés listo para probar con el backend real
-        const response = await axios.get('http://backend:3001');
+        const response = await axios.post('http://backend:3001');
 
         // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
         // const fakeApiResponse = {
