@@ -29,7 +29,6 @@ corsOptions = {
 app.use(cors(corsOptions));
 
 app.enable("trust proxy");
-app.use(enforce.HTTPS());
 
 // ROUTER SECTION
 const alumnosRouter = require("./routes/alumnos");
