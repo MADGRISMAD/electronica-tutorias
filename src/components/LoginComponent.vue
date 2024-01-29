@@ -80,6 +80,7 @@
   
   
   <script>
+  import axios from 'axios';
   export default {
     name: 'LoginComponent',
     data() {
@@ -104,6 +105,7 @@
           // const response = await axios.post('/api/login', this.formData);
   
           // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
+          const response = await axios.post('/api/login', this.formData)
           const fakeApiResponse = {
             status: 200,
             data: {
@@ -114,7 +116,7 @@
               }
             }
           };
-  
+          console.log(response);
           if (fakeApiResponse.status === 200) {
             console.log('Inicio de sesión exitoso. Respuesta simulada del backend:', fakeApiResponse.data);
           } else {
