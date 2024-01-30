@@ -1,17 +1,27 @@
 <template>
   <div class="app">
-    <LoginComponent @login="handleLogin" />
+    <!-- <LoginComponent @login="handleLogin" />  -->
+    <ResgisterComponent @login="handleLogin" />
   </div>
 </template>
 
 <script>
-import LoginComponent from './components/LoginComponent.vue';
+// import LoginComponent from './components/LoginComponent.vue';
+import ResgisterComponent from './components/ResgisterComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    LoginComponent,
-  },
+  //   LoginComponent,
+  // },
+  // methods: {
+  //   handleLogin(formData) {
+  //     // Puedes manejar la lógica de inicio de sesión aquí o enviar los datos al backend
+  //     console.log('Formulario de inicio de sesión enviado:', formData);
+  //   },
+  // },
+  ResgisterComponent ,
+},
   methods: {
     handleLogin(formData) {
       // Puedes manejar la lógica de inicio de sesión aquí o enviar los datos al backend
