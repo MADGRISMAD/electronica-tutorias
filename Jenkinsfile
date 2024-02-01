@@ -79,7 +79,6 @@ pipeline {
         //         build job: 'paac_frontend'
         //     }
         // }
-        }
     post {
         success {
             discordSend description: 'Build successfull!!', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
