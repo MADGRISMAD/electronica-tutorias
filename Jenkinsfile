@@ -4,7 +4,6 @@ pipeline {
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
         DISCORD_WEBHOOK = credentials('discordWebhook')
-        BUILD_CREDENTIALS = credentials('buildCredentials')
     }
     stages {
         stage('Fetch and install') {
@@ -63,25 +62,22 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh "http://$BUILD_CREDENTIALS@192.168.56.10:8080/job/paac_tutorias_wakeup/lastBuild/stop"
-                    sleep(5)
-                    sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
-                    sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_tutorias_wakeup/build"
+                    withCredentials([usernameColonPassword(credentialsId: 'buildCredentials', variable: 'USERPASS')]) {
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
+                        sleep(5)
+                        sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/build"
+                    }
                 }
             }
         }
-        stage('Notify Discord') {
+        stage('Start discord task') {
             steps {
-                script {
-                    discordSend description: 'Build successfull!!, sending new IP...', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
-
-                    sleep(150)
-                    def taskId = sh(returnStdout: true, script: "aws ecs list-tasks --cluster tutorias --service-name frontend --query 'taskArns[0]' --output text").trim()
-                    def networkId = sh(returnStdout: true, script: "aws ecs describe-tasks --cluster tutorias --tasks '$taskId' --query 'tasks[0].containers[0].networkInterfaces[0].attachmentId' --output text").trim()
-                    def publicIp = sh(returnStdout: true, script: "aws ec2 describe-network-interfaces --filters 'Name=description,Values=*$networkId*' --query 'NetworkInterfaces[0].Association.PublicIp' --output text").trim()
-                    // Send IP to discord
-                    discordSend description: "New IP: $publicIp", footer: 'Port 80', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
-                }
+                    withCredentials([usernameColonPassword(credentialsId: 'buildCredentials', variable: 'USERPASS')]) {
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/lastBuild/stop"
+                        sleep(5)
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/build"
+                    }
             }
         }
     }
