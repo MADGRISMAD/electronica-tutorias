@@ -8,7 +8,6 @@ pipeline {
         MONGODB_URI_DEV = credentials('MONGO_URI_DEV')
         SECRET = credentials('SECRET')
         DISCORD_WEBHOOK = credentials('discordWebhook')
-        BUILD_CREDENTIALS = credentials('buildCredentials')
     }
     stages {
         stage('Fetch and install') {
@@ -54,10 +53,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
                     sleep(5)
                     sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
-                    sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_tutorias_wakeup/build"
+                    sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_tutorias_wakeup/build"
+                    }
 
                 // Get public IP from AWS
                 }
@@ -65,9 +66,12 @@ pipeline {
         }
         stage('Start Discord Task') {
             steps{
-                sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_discord/lastBuild/stop"
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/lastBuild/stop"
                 sleep(5)
-                sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_discord/build"
+                sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/build"
+                }
+                }
             }
         }
         // stage('Build frontend') {
