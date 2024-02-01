@@ -4,6 +4,7 @@ pipeline {
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'http://785766549365.dkr.ecr.us-west-1.amazonaws.com'
         DISCORD_WEBHOOK = credentials('discordWebhook')
+        BUILD_CREDENTIALS = credentials('buildCredentials')
     }
     stages {
         stage('Fetch and install') {
@@ -62,8 +63,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    sh "http://$BUILD_CREDENTIALS@192.168.56.10:8080/job/paac_tutorias_wakeup/lastBuild/stop"
+                    sleep(5)
                     sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
-                    sh 'curl -X POST http://build:1191bb6ec8104d5a44c6660d49f7190acf@localhost:8080/job/paac_tutorias_wakeup/build'
+                    sh "curl -X POST http://$BUILD_CREDENTIALS@localhost:8080/job/paac_tutorias_wakeup/build"
                 }
             }
         }
