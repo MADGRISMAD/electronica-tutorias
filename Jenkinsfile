@@ -53,11 +53,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'buildCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
+                    withCredentials([usernameColonPassword(credentialsId: 'buildCredentials', variable: 'USERPASS')]) {
+                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
                     sleep(5)
                     sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
-                    sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_tutorias_wakeup/build"
+                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/build"
                     }
 
                 // Get public IP from AWS
@@ -66,10 +66,10 @@ pipeline {
         }
         stage('Start Discord Task') {
             steps{
-                withCredentials([usernamePassword(credentialsId: 'buildCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/lastBuild/stop"
+                withCredentials([usernameColonPassword(credentialsId: 'buildCredentials',  variable: 'USERPASS')]) {
+                sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/lastBuild/stop"
                 sleep(5)
-                sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/build"
+                sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/build"
                 }
                 }
             }
