@@ -53,7 +53,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    withCredentials([usernamePassword(credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
                     sleep(5)
                     sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
@@ -66,7 +66,7 @@ pipeline {
         }
         stage('Start Discord Task') {
             steps{
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                withCredentials([usernamePassword(credentialsId: 'buildCredentials', usenameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/lastBuild/stop"
                 sleep(5)
                 sh "curl -X POST http://$USERNAME:$PASSWORD@localhost:8080/job/paac_discord/build"
