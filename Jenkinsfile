@@ -63,6 +63,7 @@ pipeline {
             steps {
                 script {
                     sh 'aws ecs update-service --region us-west-1 --cluster tutorias --service frontend --force-new-deployment'
+                    sh 'curl -X POST http://build:1191bb6ec8104d5a44c6660d49f7190acf@localhost:8080/job/paac_tutorias_wakeup/build'
                 }
             }
         }
@@ -76,7 +77,7 @@ pipeline {
                     def networkId = sh(returnStdout: true, script: "aws ecs describe-tasks --cluster tutorias --tasks '$taskId' --query 'tasks[0].containers[0].networkInterfaces[0].attachmentId' --output text").trim()
                     def publicIp = sh(returnStdout: true, script: "aws ec2 describe-network-interfaces --filters 'Name=description,Values=*$networkId*' --query 'NetworkInterfaces[0].Association.PublicIp' --output text").trim()
                     // Send IP to discord
-                    discordSend description: "New IP: $publicIp", footer: 'Port 8081', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
+                    discordSend description: "New IP: $publicIp", footer: 'Port 80', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK
                 }
             }
         }
