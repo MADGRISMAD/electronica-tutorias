@@ -33,7 +33,7 @@ app.enable("trust proxy");
 // ROUTER SECTION
 const alumnosRouter = require("./routes/alumnos");
 
-app.use("/alumnos", alumnosRouter);
+app.use("/api/alumnos", alumnosRouter);
 
 // MIDDLEWARE SECTION
 app.use(
@@ -47,13 +47,13 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
+// app.get("/", (req, res) => {
+//     res.send("Hello World");
+// });
 
-app.post("/api/login", (req, res) => {
-    res.status(200).json({ message: "Login successful" });
-});
+// app.post("/api/login", (req, res) => {
+//     res.status(200).json({ message: "Login successful" });
+// });
 
 const server = http.createServer(app);
 
