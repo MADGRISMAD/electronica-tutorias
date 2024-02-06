@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID = credentials('AWS_ACCOUNT_ID')
         AWS_DEFAULT_REGION = 'us-west-1'
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'https://785766549365.dkr.ecr.us-west-1.amazonaws.com'
@@ -11,18 +10,37 @@ pipeline {
     }
     stages {
         stage('Fetch and install') {
+            
             steps {
-                git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'backend'
-                withNPM(npmrcConfig: npmrcConfig) {
-                    sh 'npm install'
+                git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
+                
+                dir('./BackEnd'){
+                    sh 'pwd'    
+                    withNPM(npmrcConfig: npmrcConfig) {
+                        sh 'npm install'
+                    }
+                }
+                dir('./FrontEnd'){                    
+                    sh 'pwd'
+                    withNPM(npmrcConfig: npmrcConfig) {
+                        sh 'npm install'
+                    }
                 }
             }
         }
         stage('Build') {
-            steps {
-                withNPM(npmrcConfig: npmrcConfig) {
-                    sh 'npm run build'
+                steps {
+            dir("./BackEnd"){
+                    withNPM(npmrcConfig: npmrcConfig) {
+                        sh 'npm run build'
+                    }
                 }
+
+            dir("./FrontEnd"){
+                    withNPM(npmrcConfig: npmrcConfig) {
+                        sh 'npm run build'
+                    }
+            }
             }
         }
         stage('Test') {
@@ -32,10 +50,17 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-                script {
-                    app = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV='$MONGODB_URI_DEV' --build-arg SECRET='$SECRET' --no-cache -f Dockerfile .")
+            dir("./BackEnd"){
+                    script {
+                        back = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV='$MONGODB_URI_DEV' --build-arg SECRET='$SECRET' --no-cache -f Dockerfile .")
+                    }
                 }
+            dir("./FrontEnd"){
+                    script {
+                        front = docker.build('tutorias_frontend')
+                    }
             }
+        }
         }
         stage('Push artifact') {
             steps {
@@ -45,7 +70,8 @@ pipeline {
                     //     credentialsId: 'JenkinsAWS'
                     // ]]) {
                     docker.withRegistry(ECR_HOST, 'ecr:us-west-1:JenkinsAWS') {
-                        app.push('latest')
+                        back.push('latest')
+                        front.push('latest')
                     }
                     }
                 }
@@ -56,7 +82,10 @@ pipeline {
                     withCredentials([usernameColonPassword(credentialsId: 'buildCredentials', variable: 'USERPASS')]) {
                     sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
                     sleep(5)
-                    sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
+                    withAWS(region: AWS_DEFAULT_REGION, credentials: 'JenkinsAWS') {
+                        sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
+                        sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service frontend --force-new-deployment"
+                    }
                     sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/build"
                     }
 
