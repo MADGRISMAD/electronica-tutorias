@@ -80,7 +80,7 @@
 
 <script>
 import axios from 'axios';
-import { API_URL } from '../const';
+import { API_URL, AXIOS_CONFIG } from '../const';
 export default {
   name: 'LoginComponent',
   data() {
@@ -105,7 +105,7 @@ export default {
         // const response = await axios.post('/api/login', this.formData);
 
         // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
-        const response = await axios.post( API_URL + '/login', this.formData)
+        const response = await axios.post( API_URL + '/login', this.formData, AXIOS_CONFIG);
         const fakeApiResponse = {
           status: 200,
           data: {

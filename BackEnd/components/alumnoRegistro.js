@@ -2,7 +2,7 @@ const { alumnoService } = require("../services/alumno.service");
 // const bcrypt = require("bcrypt");
 const alumnoRegistro = async (req, res, next) => {
     // Get the data from the request
-    console.log(req);
+    console.log(req.body);
     // const { numControl, password } = req.body;
 
     // // Check if the user exists

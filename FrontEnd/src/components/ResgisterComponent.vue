@@ -114,7 +114,7 @@
 
 <script>
 import axios from 'axios';
-import { API_URL } from '../const';
+import { API_URL, AXIOS_CONFIG } from '../const';
 export default {
   name: 'RegisterComponent',
   data() {
@@ -137,7 +137,7 @@ export default {
         // const response = await axios.post('/api/registro', this.formData);
 
         // POR AHORA QUE NO TIENE SELECCIÓN DE TIPO
-        const response = await axios.post( API_URL + '/alumnos/registro', this.formData);
+        const response = await axios.post( API_URL + '/alumnos/registro', this.formData, AXIOS_CONFIG);
 
         // Aquí puedes manejar la respuesta del backend
         console.log(response.data);
