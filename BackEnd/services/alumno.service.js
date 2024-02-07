@@ -1,33 +1,33 @@
 // DEPENDENCY INJECTION
 // CHANGE TO YOUR OWN DATABASE IF YOU WANT
-const db = require('../db/mongodb');
+const db = require("../db/mongodb");
 
-class AlumnoService {
-    constructor() {
-        this.db = db;
-    }
-
-    async createAlumno(data) {
-        return this.db.createAlumno(data);
-    }
-
-    async getAlumnos() {
-        return this.db.getAlumnos();
-    }
-
-    async getAlumno(numControl) {
-        return this.db.getAlumno(numControl);
-    }
-
-    async updateAlumno(numControl, data) {
-        return this.db.updateAlumno(numControl, data);
-    }
-
-    async deleteAlumno(numControl) {
-        return this.db.deleteAlumno(numControl);
-    }
+async function createAlumno(data) {
+    return db.createAlumno(data);
 }
 
-const alumnoService = new AlumnoService();
+async function getAlumnos() {
+    return db.getAlumnos();
+}
 
-module.exports = alumnoService;
+async function getAlumno(numControl) {
+    return db.getAlumno(numControl);
+}
+
+async function updateAlumno(numControl, data) {
+    return db.updateAlumno(numControl, data);
+}
+
+async function deleteAlumno(numControl) {
+    return db.deleteAlumno(numControl);
+}
+
+// const alumnoService = new AlumnoService();
+// alumnoService.get
+module.exports = {
+    createAlumno,
+    getAlumnos,
+    getAlumno,
+    updateAlumno,
+    deleteAlumno,
+};

@@ -1,6 +1,6 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const Alummo = require('../models/alumno.model');
+const Alumno = require('../models/alumno.model');
 const uri = process.env.MONGODB_URI_DEV;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -12,6 +12,7 @@ const client = new MongoClient(uri, {
   }
 });
 
+const database = client.db("hype");
 // async function run() {
 //   try {
 //     // Connect the client to the server	(optional starting in v4.7)
@@ -25,34 +26,33 @@ const client = new MongoClient(uri, {
 //   }
 // }
 
-async function createAlummo(data) {
-    const alumno = new Alummo(data);
-    return alumno.save();
+async function createAlumno(data) {
+    return database.collection('tutorias.alumnos').insertOne(data);
 }
 
-async function getAlummos() {
-    return Alummo.find();
+async function getAlumnos() {
+    return database.collection('tutorias.alumnos').find().toArray();
 }
 
-async function getAlummo(numControl) {
-    return Alummo.findOne({ numControl: numControl });
+async function getAlumno(numeroDeControl) {
+    return database.collection('tutorias.alumnos').findOne({ numeroDeControl: numeroDeControl });
 }
 
-async function updateAlummo(numControl, data) {
-    return Alummo.findOneAndUpdate({ numControl: numControl }, data);
+async function updateAlumno(numeroDeControl, data) {
+    return database.collection('tutorias.alumnos').findOneAndUpdate({ numeroDeControl: numeroDeControl }, data);
 }
 
-async function deleteAlummo(numControl) {
-    return Alummo.findOneAndDelete({ numControl: numControl });
+async function deleteAlumno(numeroDeControl) {
+    return database.collection('tutorias.alumnos').findOneAndDelete({ numeroDeControl: numeroDeControl });
 }
 
 client.connect();
 // run().catch(console.dir);
 
 module.exports = {
-    createAlummo,
-    getAlummos,
-    getAlummo,
-    updateAlummo,
-    deleteAlummo,
+    createAlumno,
+    getAlumnos,
+    getAlumno,
+    updateAlumno,
+    deleteAlumno,
 };
