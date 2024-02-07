@@ -4,6 +4,16 @@ const bcrypt = require("bcrypt");
 const AlumnoSchema = require("../models/alumno.model");
 // const bcrypt = require("bcrypt");
 const alumnoRegistro = async (req, res, next) => {
+    /*
+        Registers a new alumno
+        Expects the alumno model in the request body
+        Outputs a 400 if the data is invalid
+        Outputs a 400 if the password and the confirmation are different
+        Outputs a 400 if the user already exists
+        Outputs a 500 if the password hashing fails
+        Calls next() if the user is created
+
+    */
     // Get the data from the request
     const {error, value} = AlumnoSchema.validate(req.body);
     const { nombres, apellidos, numeroDeControl, carrera, semestreActual, contrasena, confirmarContrasena } = value;
@@ -36,21 +46,12 @@ const alumnoRegistro = async (req, res, next) => {
             semestreActual,
             contrasena: hash,
         };
+        // Save the user
         await AlumnoService.createAlumno(user);
     });
 
-    // Create the user with the model
-    // const user = new Alumno({
-    //     nombres,
-    //     apellidos,
-    //     numeroDeControl,
-    //     carrera,
-    //     semestreActual,
-    //     contrasena: hashedPassword,
-    // });
 
 
-    // Save the user
 
     next();
 };

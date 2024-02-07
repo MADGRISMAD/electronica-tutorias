@@ -1,5 +1,6 @@
 const Joi = require('joi');
 
+// Define the schema
 const AlumnoSchema = Joi.object({
     nombres: Joi.string().required(),
     apellidos: Joi.string().required(),

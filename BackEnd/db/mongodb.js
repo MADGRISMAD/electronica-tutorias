@@ -26,22 +26,27 @@ const database = client.db("hype");
 //   }
 // }
 
+// Create a new user
 async function createAlumno(data) {
     return database.collection('tutorias.alumnos').insertOne(data);
 }
 
+// Get all users
 async function getAlumnos() {
     return database.collection('tutorias.alumnos').find().toArray();
 }
 
+// Get a user by its numero de control
 async function getAlumno(numeroDeControl) {
     return database.collection('tutorias.alumnos').findOne({ numeroDeControl: numeroDeControl });
 }
 
+// Update a user by its numero de control
 async function updateAlumno(numeroDeControl, data) {
     return database.collection('tutorias.alumnos').findOneAndUpdate({ numeroDeControl: numeroDeControl }, data);
 }
 
+// Delete a user by its numero de control
 async function deleteAlumno(numeroDeControl) {
     return database.collection('tutorias.alumnos').findOneAndDelete({ numeroDeControl: numeroDeControl });
 }
