@@ -15,13 +15,11 @@ pipeline {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
                 
                 dir('./BackEnd'){
-                    sh 'pwd'    
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm install'
                     }
                 }
                 dir('./FrontEnd'){                    
-                    sh 'pwd'
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm install'
                     }
