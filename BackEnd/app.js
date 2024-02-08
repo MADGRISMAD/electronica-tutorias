@@ -8,8 +8,10 @@ const http = require("http");
 // // DB SECTION
 // const dataOrigin = require('./db/mongodb');
 
+app.enable("trust proxy");
+
 // CORS SECTION
-const whitelist = ["http://172.31.22.8:8081", "http://localhost", "http://frontend"];
+const whitelist = ["http://172.31.22.8:8081", "http://localhost:8080", "http://frontend"];
 
 // corsOptions = {
 //     origin: function (origin, callback) {
@@ -24,25 +26,27 @@ const whitelist = ["http://172.31.22.8:8081", "http://localhost", "http://fronte
 // };
 corsOptions = {
     origin: true,
+    credentials: true,
 }
 
 app.use(cors(corsOptions));
 
-app.enable("trust proxy");
+// MIDDLEWARE SECTION
+app.use(
+    expressSession({
+        secret: process.env.SECRET,
+        resave: false,
+        saveUninitialized: true,
+        // cookie: { secure: true },
+    })
+);
+
 
 // ROUTER SECTION
 const alumnosRouter = require("./routes/alumnos");
 
 app.use("/api/alumnos", alumnosRouter);
 
-// MIDDLEWARE SECTION
-app.use(
-    expressSession({
-        secret: process.env.SECRET,
-        resave: true,
-        saveUninitialized: true,
-    })
-);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -5,9 +5,9 @@ const multer = require("multer");
 const { alumnoRegistro } = require("../components/alumnoRegistro");
 const upload = multer();
 router.post("/login", upload.none(), alumnoLogin, async (req, res) => {
-    res.redirect("/alumnos");
+    res.sendStatus(200);
 });
-router.post("/registro", upload.none(), alumnoRegistro, async (req, res) => {
+router.post("/registro", upload.none(), alumnoRegistro, alumnoLogin,  async (req, res) => {
     res.sendStatus(200);
 });
 

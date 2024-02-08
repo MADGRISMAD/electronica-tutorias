@@ -50,9 +50,6 @@ const alumnoRegistro = async (req, res, next) => {
         await AlumnoService.createAlumno(user);
     });
 
-
-
-
     next();
 };
 
