@@ -1,6 +1,12 @@
 // DEPENDENCY INJECTION
 // CHANGE TO YOUR OWN DATABASE IF YOU WANT
-const db = require("../db/mongodb");
+let db;
+if (process.env.NODE_ENV === "prod") {
+    db = require("../db/mongodbProd");
+}
+if (process.env.NODE_ENV === "dev") {
+    db = require("../db/mongodbDev");
+}
 
 async function createAlumno(data) {
     return db.createAlumno(data);

@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "serve": "nodemon app.js"
+    "serve:dev": "cross-env NODE_ENV=dev nodemon app.js",
+    "serve:prod": "cross-env NODE_ENV=prod nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "webpack": "^5.89.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "html-loader": "^5.0.0",
     "webpack-cli": "^5.1.4"
   }

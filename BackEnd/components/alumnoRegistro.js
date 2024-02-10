@@ -44,7 +44,7 @@ const alumnoRegistro = async (req, res, next) => {
             numeroDeControl,
             carrera,
             semestreActual,
-            contrasena: hash,
+            contrasena: process.env.NODE_ENV === 'prod' ? hash : contrasena,
         };
         // Save the user
         await AlumnoService.createAlumno(user);

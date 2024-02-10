@@ -1,7 +1,6 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const Alumno = require('../models/alumno.model');
-const uri = process.env.MONGODB_URI_DEV;
+const uri = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -12,7 +11,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-const database = client.db("hype");
+const database = client.db("tutoriasDev");
 // async function run() {
 //   try {
 //     // Connect the client to the server	(optional starting in v4.7)
@@ -28,27 +27,27 @@ const database = client.db("hype");
 
 // Create a new user
 async function createAlumno(data) {
-    return database.collection('tutorias.alumnos').insertOne(data);
+    return database.collection('alumnos').insertOne(data);
 }
 
 // Get all users
 async function getAlumnos() {
-    return database.collection('tutorias.alumnos').find().toArray();
+    return database.collection('alumnos').find().toArray();
 }
 
 // Get a user by its numero de control
 async function getAlumno(numeroDeControl) {
-    return database.collection('tutorias.alumnos').findOne({ numeroDeControl: numeroDeControl });
+    return database.collection('alumnos').findOne({ numeroDeControl: numeroDeControl });
 }
 
 // Update a user by its numero de control
 async function updateAlumno(numeroDeControl, data) {
-    return database.collection('tutorias.alumnos').findOneAndUpdate({ numeroDeControl: numeroDeControl }, data);
+    return database.collection('alumnos').findOneAndUpdate({ numeroDeControl: numeroDeControl }, data);
 }
 
 // Delete a user by its numero de control
 async function deleteAlumno(numeroDeControl) {
-    return database.collection('tutorias.alumnos').findOneAndDelete({ numeroDeControl: numeroDeControl });
+    return database.collection('alumnos').findOneAndDelete({ numeroDeControl: numeroDeControl });
 }
 
 client.connect();
