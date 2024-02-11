@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const expressSession = require("express-session");
+const RedisStore = require("connect-redis").default;
+const { createClient } = require("redis");
 const env = require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 const http = require("http");
 // // DB SECTION
@@ -40,19 +42,22 @@ app.use(cors(corsOptions));
 
 // MIDDLEWARE SECTION
 if (process.env.NODE_ENV === "prod") {
+    const redisClient = createClient().connect().catch(new Error("Redis connection failed"));
+    const redisStore = new RedisStore({ client: redisClient });
     sessionConfig = {
+        store: redisStore,
         secret: process.env.SECRET,
         resave: false,
-        saveUninitialized: true,
-        cookie: { secure: true },
+        saveUninitialized: false,
+        cookie: { secure: true, httpOnly: true, maxAge: 1000 * 60 * 60 * 24 },
     };
 }
 if (process.env.NODE_ENV === "dev") {
     sessionConfig = {
-        secret: 'secret',
-        resave: true,
-        saveUninitialized: true,
-        // cookie: { secure: false },
+        secret: "secret",
+        resave: false,
+        saveUninitialized: false,
+        cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
     };
 }
 app.use(expressSession(sessionConfig));
