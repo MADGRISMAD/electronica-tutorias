@@ -7,16 +7,19 @@
 <script>
 import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/ResgisterComponent.vue';
+import MainPage from './components/MainPage.vue';
 
 export default {
   name: 'App',
   components: {
     LoginComponent,
     RegisterComponent,
+    MainPage,
+
   },
   data() {
     return {
-      currentComponent: 'LoginComponent',
+      currentComponent: 'RegisterComponent',
     };
   },
   methods: {

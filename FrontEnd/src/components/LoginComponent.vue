@@ -1,78 +1,45 @@
 <template>
-  <!-- Container -->
-  <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-200 py-10">
-    <!-- Login component -->
-    <div class="flex shadow-md">
-      <!-- Login form -->
-      <div
-        class="flex flex-wrap content-center justify-center rounded-l-md bg-white"
-        style="width: 24rem; height: 32rem;"
-      >
-        <div class="w-72">
-          <!-- Heading -->
-          <h1 class="text-xl font-semibold">Bienvenido</h1>
-          <small class="text-gray-400">Ingresa tus datos para iniciar sesión</small>
-
-          <!-- Form -->
-          <form class="mt-4" @submit.prevent="login">
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Número de control</label>
-              <input
-                type="text"
-                v-model="formData.numeroDeControl"
-                placeholder="Ej. 123456A"
-                pattern="[0-9]{6}[A-Za-z]"
-                title="Debe tener 6 dígitos seguidos de una letra"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Contraseña</label>
-              <input
-                type="password"
-                v-model="formData.contrasena"
-                placeholder="*****"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3 flex flex-wrap content-center">
-              <input
-                id="remember"
-                type="checkbox"
-                v-model="rememberMe"
-                class="mr-1 checked:bg-purple-700"
-              />
-              <a href="#" class="text-xs font-semibold text-purple-700" @click="switchToRegister">No tienes una cuenta?</a>
-            </div>
-
-            <div class="mb-3">
-              <button
-                class="mb-1.5 block w-full text-center text-white bg-purple-700 hover:bg-purple-900 px-2 py-1.5 rounded-md"
-              >
-                Inicia sesión
-              </button>
-            </div>
-          </form>
-
-          <!-- Footer -->
-          <div class="text-center">
-            <span class="text-xs text-gray-400 font-semibold">No tienes una cuenta?</span>
-            <a href="#" class="text-xs font-semibold text-purple-700" @click="switchToRegister">Regístrate</a>
+  <div class="bg-white dark:bg-gray-900">
+    <div class="flex justify-center h-screen">
+      <div class="hidden bg-cover lg:block lg:w-2/3" style="background-image: url(https://i.imgur.com/9l1A4OS.jpeg)">
+        <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+          <div>
+            <div class="text-white font-semibold">Nombre del Estudiante</div>
+            <div class="text-gray-400 text-sm">Programa de Electrónica</div>
           </div>
         </div>
       </div>
 
-      <!-- Login banner -->
-      <div
-        class="flex flex-wrap content-center justify-center rounded-r-md"
-        style="width: 24rem; height: 32rem;"
-      >
-        <img
-          class="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md"
-          src="https://i.imgur.com/9l1A4OS.jpeg"
-        />
+      <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+        <div class="flex-1">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">Bienvenido</h2>
+            <p class="mt-3 text-gray-500 dark:text-gray-300">Ingresa tus datos para iniciar sesión</p>
+          </div>
+
+          <div class="mt-8">
+            <form @submit.prevent="login">
+              <div>
+                <label for="numeroDeControl" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Número de control</label>
+                <input type="text" name="numeroDeControl" id="numeroDeControl" v-model="formData.numeroDeControl" placeholder="Ej. 123456A" pattern="[0-9]{6}[A-Za-z]" title="Debe tener 6 dígitos seguidos de una letra" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mt-6">
+                <label for="contrasena" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Contraseña</label>
+                <input type="password" name="contrasena" id="contrasena" v-model="formData.contrasena" placeholder="*****" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mt-6">
+                <button class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                  Inicia sesión
+                </button>
+              </div>
+
+            </form>
+
+            <p class="mt-6 text-sm text-center text-gray-400">No tienes una cuenta aún? <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline" @click="switchToRegister">Regístrate</a>.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -95,27 +62,12 @@ export default {
   methods: {
     async login() {
       try {
-        // Validaciones de formulario
         if (!this.formData.numeroDeControl || !this.formData.contrasena) {
           console.warn('Por favor, completa todos los campos del formulario.');
           return;
         }
 
-        // Descomentar la línea siguiente cuando estés listo para probar con el backend real
-        // const response = await axios.post('/api/login', this.formData);
-
-        // Simulación de respuesta del backend (puedes ajustar esto según tus necesidades)
-        const response = await axios.post( API_URL + '/alumnos/login', this.formData, AXIOS_CONFIG);
-        // const fakeApiResponse = {
-        //   status: 200,
-        //   data: {
-        //     token: 'tu_token_simulado',
-        //     usuario: {
-        //       nombre: 'Usuario Simulado',
-        //       email: 'usuario@simulado.com'
-        //     }
-        //   }
-        // };
+        const response = await axios.post(API_URL + '/alumnos/login', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
           console.log('Inicio de sesión exitoso. Respuesta del backend:', response.data);

@@ -1,112 +1,68 @@
 <template>
-  <!-- Registro component -->
-  <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-gray-200 py-10">
-    <!-- Registro form -->
-    <div class="flex shadow-md">
-      <!-- Formulario de Registro -->
-      <div class="flex flex-wrap content-center justify-center rounded-l-md bg-white" style="width: 24rem; height: 40rem;">
-        <div class="w-72">
-          <!-- Encabezado -->
-          <h1 class="text-xl font-semibold">Registro</h1>
-          <small class="text-gray-400">Completa los campos para crear una cuenta</small>
-
-          <!-- Formulario -->
-          <form class="mt-4" @submit.prevent="register">
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Nombres</label>
-              <input
-                type="text"
-                v-model="formData.nombres"
-                placeholder="Ej. Juan"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Apellidos</label>
-              <input
-                type="text"
-                v-model="formData.apellidos"
-                placeholder="Ej. Pérez"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Número de control</label>
-              <input
-                type="text"
-                v-model="formData.numeroDeControl"
-                placeholder="Ej. 123456A"
-                pattern="[0-9]{6}[A-Za-z]"
-                title="Debe tener 6 dígitos seguidos de una letra"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Carrera</label>
-              <input
-                type="text"
-                v-model="formData.carrera"
-                placeholder="Ej. Ingeniería Informática"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Semestre Actual</label>
-              <input
-                type="number"
-                v-model="formData.semestreActual"
-                placeholder="Ej. 3"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Contraseña</label>
-              <input
-                type="password"
-                v-model="formData.contrasena"
-                placeholder="*****"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <label class="mb-2 block text-xs font-semibold">Confirmar Contraseña</label>
-              <input
-                type="password"
-                v-model="formData.confirmarContrasena"
-                placeholder="*****"
-                class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
-              />
-            </div>
-
-            <div class="mb-3">
-              <button
-                class="mb-1.5 block w-full text-center text-white bg-purple-700 hover:bg-purple-900 px-2 py-1.5 rounded-md"
-              >
-                Registrarse
-              </button>
-            </div>
-          </form>
-
-          <!-- Pie de página -->
-          <div class="text-center">
-            <span class="text-xs text-gray-400 font-semibold">¿Ya tienes una cuenta?</span>
-            <a href="#" class="text-xs font-semibold text-purple-700" @click="switchToLogin">Inicia sesión</a>
+  <div class="bg-white dark:bg-gray-900">
+    <div class="flex justify-center h-screen">
+      <div class="hidden bg-cover lg:block lg:w-2/3" style="background-image: url(https://i.imgur.com/9l1A4OS.jpeg)">
+        <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+          <div>
+            <div class="text-white font-semibold">Imagen de Registro</div>
           </div>
         </div>
       </div>
 
-      <!-- Imagen de Registro -->
-      <div class="flex flex-wrap content-center justify-center rounded-r-md" style="width: 24rem; height: 40rem;">
-        <img
-          class="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md"
-          src="https://i.imgur.com/9l1A4OS.jpeg" 
-        />
+      <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+        <div class="flex-1">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">Registro</h2>
+            <p class="mt-3 text-gray-500 dark:text-gray-300">Completa los campos para crear una cuenta</p>
+          </div>
+
+          <div class="mt-8">
+            <form @submit.prevent="register">
+              <div class="mb-3">
+                <label for="nombres" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Nombres</label>
+                <input type="text" name="nombres" id="nombres" v-model="formData.nombres" placeholder="Ej. Juan" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="apellidos" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Apellidos</label>
+                <input type="text" name="apellidos" id="apellidos" v-model="formData.apellidos" placeholder="Ej. Pérez" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="numeroDeControl" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Número de control</label>
+                <input type="text" name="numeroDeControl" id="numeroDeControl" v-model="formData.numeroDeControl" placeholder="Ej. 123456A" pattern="[0-9]{6}[A-Za-z]" title="Debe tener 6 dígitos seguidos de una letra" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="carrera" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Carrera</label>
+                <input type="text" name="carrera" id="carrera" v-model="formData.carrera" placeholder="Ej. Ingeniería Informática" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="semestreActual" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Semestre Actual</label>
+                <input type="number" name="semestreActual" id="semestreActual" v-model="formData.semestreActual" placeholder="Ej. 3" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="contrasena" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Contraseña</label>
+                <input type="password" name="contrasena" id="contrasena" v-model="formData.contrasena" placeholder="*****" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <label for="confirmarContrasena" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Confirmar Contraseña</label>
+                <input type="password" name="confirmarContrasena" id="confirmarContrasena" v-model="formData.confirmarContrasena" placeholder="*****" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+              </div>
+
+              <div class="mb-3">
+                <button class="mb-1.5 block w-full text-center text-white bg-purple-700 hover:bg-purple-900 px-2 py-1.5 rounded-md">
+                  Registrarse
+                </button>
+              </div>
+            </form>
+
+            <p class="mt-6 text-sm text-center text-gray-400">¿Ya tienes una cuenta? <a href="#" class="text-purple-700 focus:outline-none focus:underline hover:underline" @click="switchToLogin">Inicia sesión</a>.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -133,21 +89,23 @@ export default {
   methods: {
     async register() {
       try {
-        // Realizar la solicitud POST al backend con Axios
-        // const response = await axios.post('/api/registro', this.formData);
+        if (!this.formData.nombres || !this.formData.apellidos || !this.formData.numeroDeControl || !this.formData.carrera || !this.formData.semestreActual || !this.formData.contrasena || !this.formData.confirmarContrasena) {
+          console.warn('Por favor, completa todos los campos del formulario.');
+          return;
+        }
 
-        // POR AHORA QUE NO TIENE SELECCIÓN DE TIPO
-        const response = await axios.post( API_URL + '/alumnos/registro', this.formData, AXIOS_CONFIG);
-
-        // Aquí puedes manejar la respuesta del backend
-        console.log(response.data);
-
-        // También puedes redirigir al usuario o realizar otras acciones según la respuesta
+        const response = await axios.post(API_URL + '/alumnos/registro', this.formData, AXIOS_CONFIG);
+        console.log(response);
+        if (response.status === 200) {
+          console.log('Registro exitoso. Respuesta del backend:', response.data);
+        } else {
+          console.warn('El backend respondió con un código de estado no esperado:', response.status);
+        }
       } catch (error) {
-        // Manejar errores de la solicitud
-        console.error('Error al registrar:', error);
+        console.error('Error al registrar:', error.message);
       }
     },
+
     switchToLogin() {
       this.$emit('switchComponent', 'LoginComponent');
     }
