@@ -4,7 +4,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'https://785766549365.dkr.ecr.us-west-1.amazonaws.com'
-        MONGODB_URI_DEV = credentials('MONGO_URI_DEV')
+        MONGODB_URI = credentials('MONGO_URI')
         SECRET = credentials('SECRET')
         DISCORD_WEBHOOK = credentials('discordWebhook')
     }
@@ -50,7 +50,7 @@ pipeline {
             steps {
             dir("./BackEnd"){
                     script {
-                        back = docker.build('tutorias_backend', "--build-arg MONGODB_URI_DEV='$MONGODB_URI_DEV' --build-arg SECRET='$SECRET' --no-cache -f Dockerfile .")
+                        back = docker.build('tutorias_backend', "--build-arg MONGODB_URI='$MONGODB_URI' --build-arg SECRET='$SECRET' --no-cache -f Dockerfile .")
                     }
                 }
             dir("./FrontEnd"){
