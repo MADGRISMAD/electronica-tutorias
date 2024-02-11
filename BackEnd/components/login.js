@@ -1,6 +1,6 @@
 const AlumnoService = require("../services/alumno.service");
 const AlumnoSchema = require("../models/alumno.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 // const bcrypt = require("bcrypt");
 const alumnoLogin = async (req, res, next) => {
     // Get the data from the request

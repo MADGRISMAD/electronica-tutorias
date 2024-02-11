@@ -1,5 +1,5 @@
 const AlumnoService = require("./../services/alumno.service");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 // const alumnoService = new AlumnoService();
 const AlumnoSchema = require("../models/alumno.model");
 // const bcrypt = require("bcrypt");
