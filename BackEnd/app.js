@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === "prod") {
     };
 }
 
+console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 app.use(cors(corsOptions));
 
 // MIDDLEWARE SECTION
