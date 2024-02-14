@@ -43,7 +43,9 @@ app.use(cors(corsOptions));
 
 // MIDDLEWARE SECTION
 if (process.env.NODE_ENV === "prod") {
-    const redisClient = createClient().connect().catch(new Error("Redis connection failed"));
+    const redisClient = createClient()
+        .connect()
+        .catch(new Error("Redis connection failed"));
     const redisStore = new RedisStore({ client: redisClient });
     sessionConfig = {
         store: redisStore,
@@ -65,8 +67,10 @@ app.use(expressSession(sessionConfig));
 
 // ROUTER SECTION
 const alumnosRouter = require("./routes/alumnos");
-
 app.use("/api/alumnos", alumnosRouter);
+
+const citasRouter = require("./routes/citas");
+app.use("/api/citas", citasRouter);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
