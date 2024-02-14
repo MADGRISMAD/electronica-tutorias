@@ -94,7 +94,7 @@ export default {
           return;
         }
 
-        const response = await axios.post(API_URL + '/alumnos/registro', this.formData, AXIOS_CONFIG);
+        const response = await axios.put(API_URL + '/alumnos/registro', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
           console.log('Registro exitoso. Respuesta del backend:', response.data);
