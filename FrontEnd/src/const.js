@@ -7,4 +7,5 @@ export const AXIOS_CONFIG = {
   headers: {
     "Content-Type": "multipart/form-data",
   },
+  "withCredentials": true,
 };

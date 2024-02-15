@@ -7,7 +7,7 @@ const {
 } = require("../components/alumno.component");
 const upload = multer();
 router.post("/login", upload.none(), alumnoLogin, async (req, res) => {
-    res.sendStatus(200);
+    return res.sendStatus(200);
 });
 router.put(
     "/registro",
@@ -15,7 +15,7 @@ router.put(
     alumnoRegistro,
     alumnoLogin,
     async (req, res) => {
-        res.sendStatus(200);
+        return res.sendStatus(200);
     }
 );
 

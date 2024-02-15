@@ -68,6 +68,7 @@ const alumnoRegistro = async (req, res, next) => {
 };
 
 const alumnoLogin = async (req, res, next) => {
+    console.log("USUARIO SESION:", req.session.usuario);
     // Get the data from the request
     const { value, error } = AlumnoSchema.validate(req.body);
     if (error)
@@ -88,6 +89,7 @@ const alumnoLogin = async (req, res, next) => {
     else if (!alumno || contrasena !== alumno.contrasena)
         return res.status(401).send("Unauthorized");
 
+    console.log("LOGIN SUCCESSFUL");
     req.session.usuario = {
         tipo: "alumno",
         numControl: alumno.numeroDeControl,
@@ -97,9 +99,7 @@ const alumnoLogin = async (req, res, next) => {
     next();
 };
 
-
-
 module.exports = {
     alumnoRegistro,
-    alumnoLogin
+    alumnoLogin,
 };

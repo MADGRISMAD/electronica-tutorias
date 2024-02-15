@@ -7,6 +7,7 @@ const RedisStore = require("connect-redis").default;
 const { createClient } = require("redis");
 const env = require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 const http = require("http");
+const { v4: uuidv4 } = require("uuid");
 // // DB SECTION
 // const dataOrigin = require('./db/mongodb');
 app.enable("trust proxy");
@@ -15,8 +16,6 @@ app.enable("trust proxy");
 
 let corsOptions, sessionConfig;
 const whitelist = [
-    "http://172.31.22.8:8081",
-    "http://localhost:8080",
     "http://frontend",
 ];
 if (process.env.NODE_ENV === "prod") {
@@ -30,15 +29,17 @@ if (process.env.NODE_ENV === "prod") {
                 callback(new Error("Not allowed by CORS"));
             }
         },
+        credentials: true,
     };
-} else {
+} 
+if (process.env.NODE_ENV === "dev"){
     corsOptions = {
-        origin: true,
+        origin: 'http://localhost:8080',
         credentials: true,
     };
 }
 
-console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
+// console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 app.use(cors(corsOptions));
 
 // MIDDLEWARE SECTION
@@ -51,30 +52,58 @@ if (process.env.NODE_ENV === "prod") {
         store: redisStore,
         secret: process.env.SECRET,
         resave: false,
-        saveUninitialized: false,
-        cookie: { secure: true, httpOnly: true, maxAge: 1000 * 60 * 60 * 24 },
+        saveUninitialized: true,
+        genid: function (req) {
+            console.log("Session ID generated");
+            return uuidv4();
+        },
+        cookie: {
+            domain: "frontend",
+            // When using HTTPS, set secure to true
+            secure: false,
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24,
+        },
     };
 }
 if (process.env.NODE_ENV === "dev") {
     sessionConfig = {
         secret: "secret",
         resave: false,
-        saveUninitialized: false,
-        cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
+        saveUninitialized: true,
+        genid: function (req) {
+            console.log("Session ID generated");
+            return uuidv4();
+        },
+        cookie: {
+            domain: "localhost",
+            secure: false,
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24,
+        },
     };
 }
 app.use(expressSession(sessionConfig));
 
 // ROUTER SECTION
-const alumnosRouter = require("./routes/alumnos");
+const alumnosRouter = require("./routes/alumno.route");
 app.use("/api/alumnos", alumnosRouter);
 
-const citasRouter = require("./routes/citas");
+const citasRouter = require("./routes/cita.route");
 app.use("/api/citas", citasRouter);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+
+const server = http.createServer(app);
+
+server.listen(process.env.PORT, () => {
+    console.log("Server running on port " + process.env.PORT);
+});
+
+// TESTING SECTION
 // app.get("/", (req, res) => {
 //     res.send("Hello World");
 // });
@@ -82,10 +111,4 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.post("/api/login", (req, res) => {
 //     res.status(200).json({ message: "Login successful" });
 // });
-
-const server = http.createServer(app);
-
-server.listen(process.env.PORT, () => {
-    console.log("Server running on port " + process.env.PORT);
-});
 module.exports = app;
