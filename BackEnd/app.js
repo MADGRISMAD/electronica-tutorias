@@ -54,7 +54,6 @@ if (process.env.NODE_ENV === "prod") {
         resave: false,
         saveUninitialized: true,
         genid: function (req) {
-            console.log("Session ID generated");
             return uuidv4();
         },
         cookie: {
@@ -72,7 +71,6 @@ if (process.env.NODE_ENV === "dev") {
         resave: false,
         saveUninitialized: true,
         genid: function (req) {
-            console.log("Session ID generated");
             return uuidv4();
         },
         cookie: {
