@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - maddie-2  # o el nombre de tu rama principal
+    paths:
+      - 'FrontEnd/**'
 
 jobs:
   test:

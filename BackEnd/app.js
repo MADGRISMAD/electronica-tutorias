@@ -5,15 +5,14 @@ const cors = require("cors");
 const expressSession = require("express-session");
 const RedisStore = require("connect-redis").default;
 const { createClient } = require("redis");
-const env = require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
+const env = require("dotenv").config(process.env.NODE_ENV === "dev" ? { path: "./.env.dev" } : {});
 const http = require("http");
 const { v4: uuidv4 } = require("uuid");
 // // DB SECTION
 // const dataOrigin = require('./db/mongodb');
 app.enable("trust proxy");
-
+console.log(process.env);
 // CORS SECTION
-
 let corsOptions, sessionConfig;
 const whitelist = [
     "http://frontend",
