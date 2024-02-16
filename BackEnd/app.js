@@ -15,7 +15,7 @@ const { v4: uuidv4 } = require("uuid");
 // // DB SECTION
 // const dataOrigin = require('./db/mongodb');
 app.enable("trust proxy");
-console.log(process.env);
+console.log(process.env.NODE_ENV);
 // CORS SECTION
 let corsOptions;
 const whitelist = ["http://frontend"];
@@ -57,7 +57,6 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
-    console.log("ENTRA");
     const redisClient = createClient()
         .connect()
         .catch(new Error("Redis connection failed"));
@@ -73,7 +72,6 @@ if (process.env.NODE_ENV === "dev") {
     sessionConfig.cookie.domain = "localhost";
     sessionConfig.cookie.secure = false;
 }
-console.log(sessionConfig);
 app.use(expressSession(sessionConfig));
 
 // ROUTER SECTION
@@ -92,10 +90,10 @@ server.listen(process.env.PORT, () => {
     console.log("Server running on port " + process.env.PORT);
 });
 
-// TESTING SECTION
-// app.get("/", (req, res) => {
-//     res.send("Hello World");
-// });
+// HEALTH CHECK
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
 
 // app.post("/api/login", (req, res) => {
 //     res.status(200).json({ message: "Login successful" });
