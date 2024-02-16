@@ -6,20 +6,21 @@ pipeline {
         ECR_HOST = 'https://785766549365.dkr.ecr.us-west-1.amazonaws.com'
         MONGODB_URI = credentials('MONGODB_URI')
         SECRET = credentials('SECRET')
+        PORT = '3001'
         DISCORD_WEBHOOK = credentials('discordWebhook')
+        NODE_ENV = 'prod'
     }
     stages {
         stage('Fetch and install') {
-            
             steps {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
-                
-                dir('./BackEnd'){
+
+                dir('./BackEnd') {
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm install'
                     }
                 }
-                dir('./FrontEnd'){                    
+                dir('./FrontEnd') {
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm install'
                     }
@@ -28,18 +29,18 @@ pipeline {
         }
         stage('Build') {
                 steps {
-            dir("./BackEnd"){
+                dir('./BackEnd') {
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm run build'
                     }
                 }
 
-            dir("./FrontEnd"){
+                dir('./FrontEnd') {
                     withNPM(npmrcConfig: npmrcConfig) {
                         sh 'npm run build'
                     }
-            }
-            }
+                }
+                }
         }
         stage('Test') {
             steps {
@@ -48,17 +49,17 @@ pipeline {
         }
         stage('Create docker image') {
             steps {
-            dir("./BackEnd"){
+                dir('./BackEnd') {
                     script {
                         back = docker.build('tutorias_backend', "--build-arg 'MONGODB_URI=$MONGODB_URI' --build-arg 'SECRET=$SECRET' --no-cache -f Dockerfile .")
                     }
                 }
-            dir("./FrontEnd"){
+                dir('./FrontEnd') {
                     script {
                         front = docker.build('tutorias_frontend')
                     }
+                }
             }
-        }
         }
         stage('Push artifact') {
             steps {
@@ -78,13 +79,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernameColonPassword(credentialsId: 'buildCredentials', variable: 'USERPASS')]) {
-                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
-                    sleep(5)
-                    withAWS(region: AWS_DEFAULT_REGION, credentials: 'JenkinsAWS') {
-                        sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
-                        sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service frontend --force-new-deployment"
-                    }
-                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/build"
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/lastBuild/stop"
+                        sleep(5)
+                        withAWS(region: AWS_DEFAULT_REGION, credentials: 'JenkinsAWS') {
+                            sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service backend --force-new-deployment"
+                            sh "aws ecs update-service --region '${AWS_DEFAULT_REGION}' --cluster tutorias --service frontend --force-new-deployment"
+                        }
+                        sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_tutorias_wakeup/build"
                     }
 
                 // Get public IP from AWS
@@ -92,20 +93,20 @@ pipeline {
             }
         }
         stage('Start Discord Task') {
-            steps{
+            steps {
                 withCredentials([usernameColonPassword(credentialsId: 'buildCredentials',  variable: 'USERPASS')]) {
-                sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/lastBuild/stop"
-                sleep(5)
-                sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/build"
-                }
+                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/lastBuild/stop"
+                    sleep(5)
+                    sh "curl -X POST http://$USERPASS@localhost:8080/job/paac_discord/build"
                 }
             }
         }
-        // stage('Build frontend') {
-        //     steps {
-        //         build job: 'paac_frontend'
-        //     }
-        // }
+        }
+    // stage('Build frontend') {
+    //     steps {
+    //         build job: 'paac_frontend'
+    //     }
+    // }
     post {
         success {
             discordSend description: 'Build successfull!!', footer: 'GG', link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: DISCORD_WEBHOOK

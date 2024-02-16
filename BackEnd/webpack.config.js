@@ -1,28 +1,37 @@
-const path = require('path');
+const path = require("path");
+const  webpack  = require("webpack");
 module.exports = {
-    entry: './app.js',
+    entry: "./app.js",
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'app.bundle.js'
+        path: path.resolve(__dirname, "dist"),
+        filename: "app.bundle.js",
     },
-    mode: 'development',
-    target: 'node',
+    mode: "development",
+    target: "node",
     experiments: {
-      topLevelAwait: true,
+        topLevelAwait: true,
     },
     node: {
-      __dirname: false,
+        __dirname: false,
     },
     module: {
-      rules: [
-        {
-          test: /\.node$/,
-          use: ['raw-loader']
-        },
-        {
-            test: /\.html$/,
-            use: ['html-loader']
-        }
-      ]
-    }
-  };
+        rules: [
+            {
+                test: /\.node$/,
+                use: ["raw-loader"],
+            },
+            {
+                test: /\.html$/,
+                use: ["html-loader"],
+            },
+        ],
+    },
+    plugins: [
+        new webpack.EnvironmentPlugin([
+            "NODE_ENV",
+            "SECRET",
+            "PORT",
+            "MONGODB_URI",
+        ]),
+    ],
+};

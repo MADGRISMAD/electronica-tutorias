@@ -40,7 +40,6 @@ if (process.env.NODE_ENV === "dev") {
     };
 }
 
-// console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
 app.use(cors(corsOptions));
 
 // MIDDLEWARE SECTION
@@ -58,6 +57,7 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
+    console.log("ENTRA");
     const redisClient = createClient()
         .connect()
         .catch(new Error("Redis connection failed"));
@@ -73,6 +73,7 @@ if (process.env.NODE_ENV === "dev") {
     sessionConfig.cookie.domain = "localhost";
     sessionConfig.cookie.secure = false;
 }
+console.log(sessionConfig);
 app.use(expressSession(sessionConfig));
 
 // ROUTER SECTION
