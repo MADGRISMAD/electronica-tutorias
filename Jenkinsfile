@@ -4,7 +4,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-west-1'
         npmrcConfig = '32b95a72-6725-4f33-ab61-211c33729898'
         ECR_HOST = 'https://785766549365.dkr.ecr.us-west-1.amazonaws.com'
-        MONGODB_URI = credentials('MONGO_URI')
+        MONGODB_URI = credentials('MONGODB_URI')
         SECRET = credentials('SECRET')
         DISCORD_WEBHOOK = credentials('discordWebhook')
     }
