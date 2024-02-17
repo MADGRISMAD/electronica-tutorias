@@ -57,7 +57,10 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
-    const redisClient = createClient()
+    const redisClient = createClient({
+        host: "redis",
+        port: 6379,
+    })
         .connect()
         .catch(new Error("Redis connection failed"));
     const redisStore = new RedisStore({ client: redisClient });
