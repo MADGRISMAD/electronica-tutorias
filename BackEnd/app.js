@@ -58,7 +58,7 @@ let sessionConfig = {
 
 if (process.env.NODE_ENV === "prod") {
     const redisClient = createClient({
-        host: "redis",
+        url: "redis://localhost:6379",
         port: 6379,
     })
         .connect()
