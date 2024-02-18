@@ -69,7 +69,7 @@ const alumnoRegistro = async (req, res, next) => {
 
 const alumnoLogin = async (req, res, next) => {
     // Get the data from the request
-    const { numeroDeControl, contrasena } = value;
+    const { numeroDeControl, contrasena } = req.body;
     if(!numeroDeControl || !contrasena)
         return res.status(400).send("Bad request");
 

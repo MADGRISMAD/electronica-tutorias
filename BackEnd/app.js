@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "prod") {
 }
 if (process.env.NODE_ENV === "dev") {
     corsOptions = {
-        origin: "http://localhost:8080",
+        origin: true,
         credentials: true,
     };
 }
