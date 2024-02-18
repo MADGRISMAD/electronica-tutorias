@@ -10,6 +10,8 @@
     "test": "npm run serve && echo 'Pruebas ejecutadas exitosamente'"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.19",
+    "@heroicons/vue": "^2.1.1",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.5",
     "core-js": "^3.8.3",

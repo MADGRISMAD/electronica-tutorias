@@ -51,7 +51,7 @@ pipeline {
             steps {
                 dir('./BackEnd') {
                     script {
-                        back = docker.build('tutorias_backend', "--build-arg 'MONGODB_URI=$MONGODB_URI' --build-arg 'SECRET=$SECRET' --no-cache -f Dockerfile .")
+                        back = docker.build('tutorias_backend', '--no-cache -f Dockerfile .')
                     }
                 }
                 dir('./FrontEnd') {
