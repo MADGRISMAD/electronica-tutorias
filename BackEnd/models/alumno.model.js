@@ -2,14 +2,14 @@ const Joi = require('joi');
 
 // Define the schema
 const AlumnoSchema = Joi.object({
-    nombres: Joi.string().optional().uppercase(),
-    apellidos: Joi.string().optional().uppercase(),
+    nombres: Joi.string().required().uppercase(),
+    apellidos: Joi.string().required().uppercase(),
     numeroDeControl: Joi.string().required().uppercase(),
-    carrera: Joi.string().optional(),
-    semestreActual: Joi.number().optional().min(1).max(15),
+    carrera: Joi.string().required(),
+    semestreActual: Joi.number().required().min(1).max(15),
     // email: Joi.string().email().required(),
     contrasena: Joi.string().required(),
-    confirmarContrasena: Joi.string().optional(),
+    confirmarContrasena: Joi.string().required(),
 });
 
 module.exports = AlumnoSchema;

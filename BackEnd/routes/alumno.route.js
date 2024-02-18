@@ -6,11 +6,11 @@ const {
     alumnoLogin,
 } = require("../components/alumno.component");
 const upload = multer();
-router.post("/login", upload.none(), alumnoLogin, async (req, res) => {
+router.post("/", upload.none(), alumnoLogin, async (req, res) => {
     return res.sendStatus(200);
 });
 router.put(
-    "/registro",
+    "/",
     upload.none(),
     alumnoRegistro,
     alumnoLogin,

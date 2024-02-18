@@ -3,8 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const expressSession = require("express-session");
-const RedisStore = require("connect-redis").default;
-const { createClient } = require("redis");
+const MemcachedStore = require("connect-memcached")(expressSession);
 const env = require("dotenv").config(
     process.env.NODE_ENV === "dev"
         ? { path: "./.env.dev" }
@@ -57,15 +56,12 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
-    const redisClient = createClient({
-        url: "redis://localhost:6379",
-        port: 6379,
+    
+    sessionConfig.store = new MemcachedStore({
+        hosts: ["127.0.0.1:11211"],
+        secret: process.env.SECRET,
     })
-        .connect()
-        .catch(new Error("Redis connection failed"));
-    const redisStore = new RedisStore({ client: redisClient });
-    (sessionConfig.secret = process.env.SECRET),
-        (sessionConfig.store = redisStore);
+    sessionConfig.secret = process.env.SECRET;
     sessionConfig.cookie.domain = "frontend";
     // When using HTTPS, set secure to true
     sessionConfig.cookie.secure = false;
