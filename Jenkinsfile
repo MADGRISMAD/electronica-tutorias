@@ -16,12 +16,12 @@ pipeline {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
 
                 dir('./BackEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm install'
                     }
                 }
                 dir('./FrontEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm install'
                     }
                 }
@@ -30,13 +30,13 @@ pipeline {
         stage('Build') {
                 steps {
                 dir('./BackEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm run build'
                     }
                 }
 
                 dir('./FrontEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm run build'
                     }
                 }
