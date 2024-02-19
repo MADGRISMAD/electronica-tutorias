@@ -46,8 +46,26 @@ const getCitaByAlumno = async (req, res, next) => {
         return res.status(500).json({ message: error.message });
     }
 }
+const updateCita = async (req, res, next) => {
+    const { id } = req.params;
+    const { error, value } = CitaSchema.validate(req.body);
+    if (error) {
+        return res
+            .status(400)
+            .json({ message: error.details[0].message });
+    }
+
+    try {
+        const cita = await CitaService.updateCita(id, value);
+        return res.status(200).json(cita);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+
+}
 module.exports = {
     citaRegistro,
     getCitas,
-    getCitaByAlumno
+    getCitaByAlumno,
+    updateCita
 };
