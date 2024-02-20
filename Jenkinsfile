@@ -9,6 +9,8 @@ pipeline {
         PORT = '3001'
         DISCORD_WEBHOOK = credentials('discordWebhook')
         NODE_ENV = 'prod'
+        SMTP_EMAIL = credentials('SMTP_EMAIL')
+        SMTP_PASSWORD = credentials('SMTP_PASSWORD')
     }
     stages {
         stage('Fetch and install') {

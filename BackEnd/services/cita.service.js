@@ -1,5 +1,6 @@
 let db;
-
+const nodemailer = require("nodemailer");
+const { sendMail } = require("../configuration/nodemailer.conf");
 if (process.env.NODE_ENV === "prod") {
     db = require("../db/mongodbProd");
 }
@@ -7,7 +8,14 @@ if(process.env.NODE_ENV === "dev") {
     db = require("../db/mongodbDev");
 }
 
-async function createCita(data) {
+async function createCita(data, email = "") {
+    sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: email,
+        subject: "Cita Registrada",
+        text: `Tu cita ha sido registrada con éxito. Fecha: ${data.fecha}`,
+    
+    })
     return db.createCita(data);
 }
 
