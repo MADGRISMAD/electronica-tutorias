@@ -32,6 +32,8 @@ module.exports = {
             "SECRET",
             "PORT",
             "MONGODB_URI",
+            "SMTP_EMAIL",
+            "SMTP_PASSWORD",
         ]),
     ],
 };
