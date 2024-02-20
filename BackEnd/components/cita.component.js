@@ -2,26 +2,12 @@ const CitaSchema = require("../models/cita.model");
 const CitaService = require("../services/cita.service");
 
 const citaRegistro = async (req, res, next) => {
-    const { error, value } = CitaSchema.validate(req.body);
-    const {
-        fecha,
-        hora,
-        minutos,
-        numeroDeControl,
-    } = value;
+    const { error, cita } = CitaSchema.validate(req.body);
     if (error) {
-        return res
-            .status(400)
-            .json({ message: error.details[0].message });
+        return res.status(400).json({ message: error.details[0].message });
     }
-    const cita = {
-        fecha,
-        hora,
-        minutos,
-        numeroDeControl,
-    };
     try {
-        const newCita = await CitaService.createCita(cita);
+        const newCita = await CitaService.createCita(cita, req.session.usuario.email);
         return res.status(201).json(newCita);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -35,7 +21,7 @@ const getCitas = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
+};
 
 const getCitaByAlumno = async (req, res, next) => {
     const { id } = req.params;
@@ -45,14 +31,12 @@ const getCitaByAlumno = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-}
+};
 const updateCita = async (req, res, next) => {
     const { id } = req.params;
     const { error, value } = CitaSchema.validate(req.body);
     if (error) {
-        return res
-            .status(400)
-            .json({ message: error.details[0].message });
+        return res.status(400).json({ message: error.details[0].message });
     }
 
     try {
@@ -61,11 +45,10 @@ const updateCita = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
-
-}
+};
 module.exports = {
     citaRegistro,
     getCitas,
     getCitaByAlumno,
-    updateCita
+    updateCita,
 };
