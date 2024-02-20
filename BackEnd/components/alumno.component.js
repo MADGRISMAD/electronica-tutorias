@@ -91,10 +91,12 @@ const alumnoLogin = async (req, res, next) => {
     req.session.usuario = {
         tipo: "alumno",
         numControl: alumno.numeroDeControl,
+        // TESTING
+        email: process.env.SMTP_EMAIL,
     };
 
-    // If the password is correct, continue
-    next();
+    // If the password is correct, return 200
+    return res.sendStatus(200);
 };
 
 module.exports = {
