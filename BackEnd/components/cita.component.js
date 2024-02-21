@@ -23,10 +23,10 @@ const getCitas = async (req, res, next) => {
     }
 };
 
-const getCitaByAlumno = async (req, res, next) => {
+const getCitasByAlumno = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const cita = await CitaService.getCitaByAlumno(id);
+        const cita = await CitaService.getCitasByAlumno(id);
         return res.status(200).json(cita);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -49,6 +49,6 @@ const updateCita = async (req, res, next) => {
 module.exports = {
     citaRegistro,
     getCitas,
-    getCitaByAlumno,
+    getCitasByAlumno,
     updateCita,
 };
