@@ -4,6 +4,7 @@ const Joi = require('joi');
 const AlumnoSchema = Joi.object({
     nombres: Joi.string().required().uppercase(),
     apellidos: Joi.string().required().uppercase(),
+    // This is a unique field
     numeroDeControl: Joi.string().required().uppercase(),
     carrera: Joi.string().required(),
     semestreActual: Joi.number().required().min(1).max(15),

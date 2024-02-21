@@ -27,8 +27,8 @@ async function getCita(id) {
     return db.getCita(id);
 }
 
-async function getCitaByAlumno(id) {
-    return db.getCitaByAlumno(id);
+async function getCitasByAlumno(id) {
+    return db.getCitasByAlumno(id);
 }
 
 async function updateCita(id, data) {
@@ -43,7 +43,7 @@ module.exports = {
     createCita,
     getCitas,
     getCita,
-    getCitaByAlumno,
+    getCitasByAlumno,
     updateCita,
     deleteCita,
 };

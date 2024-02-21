@@ -56,11 +56,10 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
-    
     sessionConfig.store = new MemcachedStore({
         hosts: ["127.0.0.1:11211"],
         secret: process.env.SECRET,
-    })
+    });
     sessionConfig.secret = process.env.SECRET;
     sessionConfig.cookie.domain = "frontend";
     // When using HTTPS, set secure to true
@@ -93,7 +92,7 @@ server.listen(process.env.PORT, () => {
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
-
+//// TESTING SECTION
 // app.post("/api/login", (req, res) => {
 //     res.status(200).json({ message: "Login successful" });
 // });

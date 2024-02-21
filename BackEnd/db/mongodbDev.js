@@ -33,7 +33,40 @@ async function createAlumno(data) {
 async function getAlumnos() {
     return database.collection("alumnos").find().toArray();
 }
-
+// Get all users with a cita within 30 minutes
+async function getAlumnosWithCita() {
+    // Current date and time
+    const date = new Date().now();
+    // 30 minutes after now
+    const cutoffDate = new Date().now();
+    // Gets Alumnos with a cita object created in the database
+    return database
+        .collection("citas")
+        .aggregate([
+            {
+                $lookup: {
+                    $from: "alumnos",
+                    localField: "numeroDeControl",
+                    foreignField: "numeroDeControl",
+                    as: "alumno",
+                },
+            },
+            {
+                $match: {
+                    fecha: { $lte: cutoffDate },
+                },
+            },
+            {
+                $project: {
+                    alumno: 1,
+                },
+            },
+        ])
+        .toArray((err, res) => {
+            if (err) throw err;
+            // console.log(res);
+        });
+}
 // Get a user by its numero de control
 async function getAlumno(numeroDeControl) {
     return database
@@ -64,7 +97,7 @@ async function getCitas() {
 async function getCita(id) {
     return database.collection("citas").findOne({ _id: id });
 }
-async function getCitaByAlumno(id) {
+async function getCitasByAlumno(id) {
     return database.collection("citas").find({ numeroDeControl: id }).toArray();
 }
 async function updateCita(id, data) {
@@ -79,13 +112,14 @@ client.connect();
 module.exports = {
     createAlumno,
     getAlumnos,
+    getAlumnosWithCita,
     getAlumno,
     updateAlumno,
     deleteAlumno,
     createCita,
     getCitas,
     getCita,
-    getCitaByAlumno,
+    getCitasByAlumno,
     updateCita,
     deleteCita,
 };

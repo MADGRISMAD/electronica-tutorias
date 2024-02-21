@@ -40,6 +40,40 @@ async function getAlumno(numeroDeControl) {
         .collection("alumnos")
         .findOne({ numeroDeControl: numeroDeControl });
 }
+// Get all users with a cita within 30 minutes
+async function getAlumnosWithCita() {
+    // Current date and time
+    const date = new Date().now();
+    // 30 minutes after now
+    const cutoffDate = new Date().now();
+    // Gets Alumnos with a cita object created in the database
+    return database
+        .collection("citas")
+        .aggregate([
+            {
+                $lookup: {
+                    $from: "alumnos",
+                    localField: "numeroDeControl",
+                    foreignField: "numeroDeControl",
+                    as: "alumno",
+                },
+            },
+            {
+                $match: {
+                    fecha: { $lte: cutoffDate },
+                },
+            },
+            {
+                $project: {
+                    alumno: 1,
+                },
+            },
+        ])
+        .toArray((err, res) => {
+            if (err) throw err;
+            // console.log(res);
+        });
+}
 
 // Update a user by its numero de control
 async function updateAlumno(numeroDeControl, data) {
@@ -79,6 +113,7 @@ client.connect();
 module.exports = {
     createAlumno,
     getAlumnos,
+    getAlumnosWithCita,
     getAlumno,
     updateAlumno,
     deleteAlumno,
