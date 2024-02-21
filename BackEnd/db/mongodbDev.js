@@ -24,6 +24,7 @@ const database = client.db("tutoriasDev");
 //   }
 // }
 
+// Alumnos
 // Create a new user
 async function createAlumno(data) {
     return database.collection("alumnos").insertOne(data);
@@ -87,7 +88,7 @@ async function deleteAlumno(numeroDeControl) {
         .collection("alumnos")
         .findOneAndDelete({ numeroDeControl: numeroDeControl });
 }
-
+// Citas
 async function createCita(data) {
     return database.collection("citas").insertOne(data);
 }
@@ -106,6 +107,28 @@ async function updateCita(id, data) {
 async function deleteCita(id) {
     return database.collection("citas").findOneAndDelete({ _id: id });
 }
+// Maestros
+async function createMaestro(data) {
+    return database.collection("maestros").insertOne(data);
+}
+async function getMaestros() {
+    return database.collection("maestros").find().toArray();
+}
+async function getMaestro(numeroDeEmpleado) {
+    return database
+        .collection("maestros")
+        .findOne({ numeroDeEmpleado: numeroDeEmpleado });
+}
+async function updateMaestro(numeroDeEmpleado, data) {
+    return database
+        .collection("maestros")
+        .findOneAndUpdate({ numeroDeEmpleado: numeroDeEmpleado }, data);
+}
+async function deleteMaestro(numeroDeEmpleado) {
+    return database
+        .collection("maestros")
+        .findOneAndDelete({ numeroDeEmpleado: numeroDeEmpleado });
+}
 client.connect();
 // run().catch(console.dir);
 
@@ -122,4 +145,9 @@ module.exports = {
     getCitasByAlumno,
     updateCita,
     deleteCita,
+    createMaestro,
+    getMaestros,
+    getMaestro,
+    updateMaestro,
+    deleteMaestro,
 };
