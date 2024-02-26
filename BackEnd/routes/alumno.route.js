@@ -5,6 +5,7 @@ const {
     alumnoRegistro,
     alumnoLogin,
 } = require("../components/alumno.component");
+    const { getCitasByAlumno } = require("../services/cita.service");
 const upload = multer();
 router.post("/", upload.none(), alumnoLogin);
 router.put(
@@ -13,5 +14,12 @@ router.put(
     alumnoRegistro,
     alumnoLogin
 );
+
+router.get("/",  async function (req,res) {
+        // Get the alumnos that has a cita in 30 minutes
+        alumnos = getCitasByAlumno();
+    
+        res.send(alumnos);
+    });
 
 module.exports = router;
