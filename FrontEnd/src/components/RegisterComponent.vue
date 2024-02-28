@@ -97,8 +97,13 @@ export default {
         const response = await axios.put(API_URL + '/alumnos', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
-          console.log('Registro exitoso. Respuesta del backend:', response.data);
-        } else {
+          // console.log('Registro exitoso. Respuesta del backend:', response.data);
+          this.$router.push("/")
+        } 
+        else if (response.status === 400){
+          alert("Bad request")
+        }
+        else {
           console.warn('El backend respondió con un código de estado no esperado:', response.status);
         }
       } catch (error) {
@@ -107,7 +112,7 @@ export default {
     },
 
     switchToLogin() {
-      this.$emit('switchComponent', 'LoginComponent');
+      this.$router.replace('/login');
     }
   }
 };
