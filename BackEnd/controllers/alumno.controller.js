@@ -1,5 +1,5 @@
 const AlumnoService = require("../services/alumno.service");
-const bcrypt = require("bcryptjs");
+const bcryptUtil = require("../utils/bcrypt.util");
 // const alumnoService = new AlumnoService();
 const AlumnoSchema = require("../models/alumno.model");
 // const bcrypt = require("bcrypt");
@@ -70,22 +70,17 @@ const alumnoRegistro = async (req, res, next) => {
 const alumnoLogin = async (req, res, next) => {
     // Get the data from the request
     const { numeroDeControl, contrasena } = req.body;
-    if(!numeroDeControl || !contrasena)
+    if (!numeroDeControl || !contrasena)
         return res.status(400).send("Bad request");
 
     // Check if the user exists
     const alumno = await AlumnoService.getAlumno(numeroDeControl);
 
     // If the user exists, check if the password is correct
+    if (!alumno) return res.status(404);
+
     // PRODUCTION: Use the hashed password
-    if (
-        !alumno ||
-        (!bcrypt.compare(contrasena, alumno.contrasena) &&
-            process.env.NODE_ENV === "prod")
-    )
-        return res.status(401).send("Unauthorized");
-    // DEVELOPMENT: Use the plain text password
-    else if (!alumno || contrasena !== alumno.contrasena)
+    if (!bcryptUtil.compareHash(contrasena, alumno.contrasena))
         return res.status(401).send("Unauthorized");
 
     req.session.usuario = {
