@@ -1,13 +1,14 @@
-let db;
+const db = require("../configuration/db.conf").default;
 
-if (process.env.NODE_ENV === "prod") {
-    db = require("../db/mongodbProd");
-}
-if(process.env.NODE_ENV === "dev") {
-    db = require("../db/mongodbDev");
-}
 
-async function createCita(data) {
+async function createCita(data, email = "") {
+    sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: email,
+        subject: "Cita Registrada",
+        text: `Tu cita ha sido registrada con éxito. Fecha: ${data.fecha}`,
+    
+    })
     return db.createCita(data);
 }
 
@@ -19,8 +20,8 @@ async function getCita(id) {
     return db.getCita(id);
 }
 
-async function getCitaByAlumno(id) {
-    return db.getCitaByAlumno(id);
+async function getCitasByAlumno(id) {
+    return db.getCitasByAlumno(id);
 }
 
 async function updateCita(id, data) {
@@ -35,7 +36,7 @@ module.exports = {
     createCita,
     getCitas,
     getCita,
-    getCitaByAlumno,
+    getCitasByAlumno,
     updateCita,
     deleteCita,
 };

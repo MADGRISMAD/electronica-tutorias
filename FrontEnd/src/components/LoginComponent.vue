@@ -67,7 +67,7 @@ export default {
           return;
         }
 
-        const response = await axios.post(API_URL + '/alumnos/login', this.formData, AXIOS_CONFIG);
+        const response = await axios.post(API_URL + '/alumnos', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
           console.log('Inicio de sesión exitoso. Respuesta del backend:', response.data);

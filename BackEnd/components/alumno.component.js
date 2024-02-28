@@ -69,10 +69,10 @@ const alumnoRegistro = async (req, res, next) => {
 
 const alumnoLogin = async (req, res, next) => {
     // Get the data from the request
-    const { value, error } = AlumnoSchema.validate(req.body);
-    if (error)
-        return res.status(400).json({ message: error.details[0].message });
-    const { numeroDeControl, contrasena } = value;
+    const { numeroDeControl, contrasena } = req.body;
+    if(!numeroDeControl || !contrasena)
+        return res.status(400).send("Bad request");
+
     // Check if the user exists
     const alumno = await AlumnoService.getAlumno(numeroDeControl);
 
@@ -91,10 +91,12 @@ const alumnoLogin = async (req, res, next) => {
     req.session.usuario = {
         tipo: "alumno",
         numControl: alumno.numeroDeControl,
+        // TESTING
+        email: process.env.SMTP_EMAIL,
     };
 
-    // If the password is correct, continue
-    next();
+    // If the password is correct, return 200
+    return res.sendStatus(200);
 };
 
 module.exports = {

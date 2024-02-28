@@ -9,6 +9,8 @@ pipeline {
         PORT = '3001'
         DISCORD_WEBHOOK = credentials('discordWebhook')
         NODE_ENV = 'prod'
+        SMTP_EMAIL = credentials('SMTP_EMAIL')
+        SMTP_PASSWORD = credentials('SMTP_PASSWORD')
     }
     stages {
         stage('Fetch and install') {
@@ -16,12 +18,12 @@ pipeline {
                 git url: 'https://github.com/MADGRISMAD/electronica-tutorias.git', branch: 'maddie-2'
 
                 dir('./BackEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm install'
                     }
                 }
                 dir('./FrontEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm install'
                     }
                 }
@@ -30,13 +32,13 @@ pipeline {
         stage('Build') {
                 steps {
                 dir('./BackEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm run build'
                     }
                 }
 
                 dir('./FrontEnd') {
-                    withNPM(npmrcConfig: npmrcConfig) {
+                    nodejs(nodeJSInstallationName: 'node') {
                         sh 'npm run build'
                     }
                 }

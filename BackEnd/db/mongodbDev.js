@@ -24,6 +24,7 @@ const database = client.db("tutoriasDev");
 //   }
 // }
 
+// Alumnos
 // Create a new user
 async function createAlumno(data) {
     return database.collection("alumnos").insertOne(data);
@@ -33,7 +34,40 @@ async function createAlumno(data) {
 async function getAlumnos() {
     return database.collection("alumnos").find().toArray();
 }
-
+// Get all users with a cita within 30 minutes
+async function getAlumnosWithCita() {
+    // Current date and time
+    const date = new Date().now();
+    // 30 minutes after now
+    const cutoffDate = new Date().now();
+    // Gets Alumnos with a cita object created in the database
+    return database
+        .collection("citas")
+        .aggregate([
+            {
+                $lookup: {
+                    $from: "alumnos",
+                    localField: "numeroDeControl",
+                    foreignField: "numeroDeControl",
+                    as: "alumno",
+                },
+            },
+            {
+                $match: {
+                    fecha: { $lte: cutoffDate },
+                },
+            },
+            {
+                $project: {
+                    alumno: 1,
+                },
+            },
+        ])
+        .toArray((err, res) => {
+            if (err) throw err;
+            // console.log(res);
+        });
+}
 // Get a user by its numero de control
 async function getAlumno(numeroDeControl) {
     return database
@@ -54,7 +88,7 @@ async function deleteAlumno(numeroDeControl) {
         .collection("alumnos")
         .findOneAndDelete({ numeroDeControl: numeroDeControl });
 }
-
+// Citas
 async function createCita(data) {
     return database.collection("citas").insertOne(data);
 }
@@ -64,7 +98,7 @@ async function getCitas() {
 async function getCita(id) {
     return database.collection("citas").findOne({ _id: id });
 }
-async function getCitaByAlumno(id) {
+async function getCitasByAlumno(id) {
     return database.collection("citas").find({ numeroDeControl: id }).toArray();
 }
 async function updateCita(id, data) {
@@ -73,19 +107,47 @@ async function updateCita(id, data) {
 async function deleteCita(id) {
     return database.collection("citas").findOneAndDelete({ _id: id });
 }
+// Maestros
+async function createMaestro(data) {
+    return database.collection("maestros").insertOne(data);
+}
+async function getMaestros() {
+    return database.collection("maestros").find().toArray();
+}
+async function getMaestro(numeroDeEmpleado) {
+    return database
+        .collection("maestros")
+        .findOne({ numeroDeEmpleado: numeroDeEmpleado });
+}
+async function updateMaestro(numeroDeEmpleado, data) {
+    return database
+        .collection("maestros")
+        .findOneAndUpdate({ numeroDeEmpleado: numeroDeEmpleado }, data);
+}
+async function deleteMaestro(numeroDeEmpleado) {
+    return database
+        .collection("maestros")
+        .findOneAndDelete({ numeroDeEmpleado: numeroDeEmpleado });
+}
 client.connect();
 // run().catch(console.dir);
 
 module.exports = {
     createAlumno,
     getAlumnos,
+    getAlumnosWithCita,
     getAlumno,
     updateAlumno,
     deleteAlumno,
     createCita,
     getCitas,
     getCita,
-    getCitaByAlumno,
+    getCitasByAlumno,
     updateCita,
     deleteCita,
+    createMaestro,
+    getMaestros,
+    getMaestro,
+    updateMaestro,
+    deleteMaestro,
 };

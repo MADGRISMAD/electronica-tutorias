@@ -3,8 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const expressSession = require("express-session");
-const RedisStore = require("connect-redis").default;
-const { createClient } = require("redis");
+const MemcachedStore = require("connect-memcached")(expressSession);
 const env = require("dotenv").config(
     process.env.NODE_ENV === "dev"
         ? { path: "./.env.dev" }
@@ -35,7 +34,7 @@ if (process.env.NODE_ENV === "prod") {
 }
 if (process.env.NODE_ENV === "dev") {
     corsOptions = {
-        origin: "http://localhost:8080",
+        origin: true,
         credentials: true,
     };
 }
@@ -57,15 +56,11 @@ let sessionConfig = {
 };
 
 if (process.env.NODE_ENV === "prod") {
-    const redisClient = createClient({
-        url: "redis://localhost:6379",
-        port: 6379,
-    })
-        .connect()
-        .catch(new Error("Redis connection failed"));
-    const redisStore = new RedisStore({ client: redisClient });
-    (sessionConfig.secret = process.env.SECRET),
-        (sessionConfig.store = redisStore);
+    sessionConfig.store = new MemcachedStore({
+        hosts: ["127.0.0.1:11211"],
+        secret: process.env.SECRET,
+    });
+    sessionConfig.secret = process.env.SECRET;
     sessionConfig.cookie.domain = "frontend";
     // When using HTTPS, set secure to true
     sessionConfig.cookie.secure = false;
@@ -93,11 +88,16 @@ server.listen(process.env.PORT, () => {
     console.log("Server running on port " + process.env.PORT);
 });
 
+// CRON SECTION
+const { sendMailToAlumnos } = require("./utils/cron.utils");
+sendMailToAlumnos.start();
+
+
 // HEALTH CHECK
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
-
+//// TESTING SECTION
 // app.post("/api/login", (req, res) => {
 //     res.status(200).json({ message: "Login successful" });
 // });
