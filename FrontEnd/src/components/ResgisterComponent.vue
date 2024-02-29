@@ -35,22 +35,29 @@
 
               <div class="mb-3">
                 <label for="carrera" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Carrera</label>
-                <input type="text" name="carrera" id="carrera" v-model="formData.carrera" placeholder="Ej. Ingeniería Informática" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+                <select name="carrera" id="carrera" v-model="formData.carrera" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40">
+                  <option value="" disabled selected>Selecciona una carrera</option>
+                  <option v-for="(carrera, index) in carreras" :key="index" :value="carrera">{{ carrera }}</option>
+                </select>
+                <span class="text-red-500 text-sm" v-if="errores.carrera">{{ errores.carrera }}</span>
               </div>
 
               <div class="mb-3">
                 <label for="semestreActual" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Semestre Actual</label>
                 <input type="number" name="semestreActual" id="semestreActual" v-model="formData.semestreActual" placeholder="Ej. 3" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+                <span class="text-red-500 text-sm" v-if="errores.semestreActual">{{ errores.semestreActual }}</span>
               </div>
 
               <div class="mb-3">
                 <label for="contrasena" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Contraseña</label>
                 <input type="password" name="contrasena" id="contrasena" v-model="formData.contrasena" placeholder="*****" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+                <span class="text-red-500 text-sm" v-if="errores.contrasena">{{ errores.contrasena }}</span>
               </div>
 
               <div class="mb-3">
                 <label for="confirmarContrasena" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Confirmar Contraseña</label>
                 <input type="password" name="confirmarContrasena" id="confirmarContrasena" v-model="formData.confirmarContrasena" placeholder="*****" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-purple-700 dark:focus:border-purple-700 focus:ring-purple-700 focus:outline-none focus:ring focus:ring-opacity-40" />
+                <span class="text-red-500 text-sm" v-if="errores.confirmarContrasena">{{ errores.confirmarContrasena }}</span>
               </div>
 
               <div class="mb-3">
@@ -60,7 +67,7 @@
               </div>
             </form>
 
-            <p class="mt-6 text-sm text-center text-gray-400">¿Ya tienes una cuenta? <a href="#" class="text-purple-700 focus:outline-none focus:underline hover:underline" @click="switchToLogin">Inicia sesión</a>.</p>
+            <p class="mt-6 text-sm text-center text-gray-400">¿Ya tienes una cuenta? <router-link to="/login" class="text-purple-700 focus:outline-none focus:underline hover:underline">Inicia sesión</router-link>.</p>
           </div>
         </div>
       </div>
@@ -83,32 +90,44 @@ export default {
         semestreActual: '',
         contrasena: '',
         confirmarContrasena: ''
-      }
+      },
+      carreras: ['Ingeniería Informática', 'Electrónica', 'Mecatrónica', 'Sistemas Computacionales'], // Lista de carreras
+      errores: {}
     };
   },
   methods: {
     async register() {
       try {
+        // Validación del formulario
+        this.errores = {};
         if (!this.formData.nombres || !this.formData.apellidos || !this.formData.numeroDeControl || !this.formData.carrera || !this.formData.semestreActual || !this.formData.contrasena || !this.formData.confirmarContrasena) {
           console.warn('Por favor, completa todos los campos del formulario.');
           return;
         }
+        if (this.formData.contrasena !== this.formData.confirmarContrasena) {
+          this.errores.confirmarContrasena = 'Las contraseñas no coinciden';
+          return;
+        }
+        if (parseInt(this.formData.semestreActual) < 1) {
+          this.errores.semestreActual = 'El semestre debe ser mayor o igual a 1';
+          return;
+        }
 
+        // Envío de datos al backend
         const response = await axios.put(API_URL + '/alumnos', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
           console.log('Registro exitoso. Respuesta del backend:', response.data);
+          // Redirigir a la página de inicio de sesión si el registro es exitoso
+          this.$router.push({ name: 'Login' });
         } else {
           console.warn('El backend respondió con un código de estado no esperado:', response.status);
         }
       } catch (error) {
         console.error('Error al registrar:', error.message);
       }
-    },
-
-    switchToLogin() {
-      this.$emit('switchComponent', 'LoginComponent');
     }
   }
 };
 </script>
+

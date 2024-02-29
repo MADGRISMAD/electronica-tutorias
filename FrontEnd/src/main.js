@@ -9,10 +9,21 @@ import MainPage from './components/MainPage.vue';
 import FaqComponent from './components/FaqComponent.vue';
 
 const routes = [
-    { path: '/login', component: LoginComponent },
-    { path: '/register', component: RegisterComponent },
-    { path: '/faq', component: FaqComponent },
-    { path: '/', component: MainPage }
+    { path: '/login',
+    name: 'login',
+    component: LoginComponent },
+    { path: '/register',
+    name:'register',
+    component: RegisterComponent },
+    { path: '/main',
+    name:'main',
+    component: MainPage },
+    { path: '/faq',
+    name: 'faq',
+    component: FaqComponent },
+    { path: '/',   
+    redirect: '/login' }
+    
 ]
 const router = createRouter({
     history: createWebHistory(),

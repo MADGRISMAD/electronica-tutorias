@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  
     <SidebarComponent  />
 
     <div class="flex flex-col w-full">
@@ -31,7 +31,7 @@
         </div>
       </section>
     </div>
-  </div>
+  
 </template>
 
 <script>

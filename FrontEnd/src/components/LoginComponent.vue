@@ -37,7 +37,7 @@
 
             </form>
 
-            <p class="mt-6 text-sm text-center text-gray-400">No tienes una cuenta aún? <a href="#" class="text-blue-500 focus:outline-none focus:underline hover:underline" @click="switchToRegister">Regístrate</a>.</p>
+            <p class="mt-6 text-sm text-center text-gray-400">No tienes una cuenta aún? <router-link to="/register" class="text-blue-500 focus:outline-none focus:underline hover:underline">Regístrate</router-link>.</p>
           </div>
         </div>
       </div>
