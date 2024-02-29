@@ -117,15 +117,22 @@ export default {
         const response = await axios.put(API_URL + '/alumnos', this.formData, AXIOS_CONFIG);
         console.log(response);
         if (response.status === 200) {
-          console.log('Registro exitoso. Respuesta del backend:', response.data);
-          // Redirigir a la página de inicio de sesión si el registro es exitoso
-          this.$router.push({ name: 'Login' });
-        } else {
+          // console.log('Registro exitoso. Respuesta del backend:', response.data);
+          this.$router.push("/")
+        } 
+        else if (response.status === 400){
+          alert("Bad request")
+        }
+        else {
           console.warn('El backend respondió con un código de estado no esperado:', response.status);
         }
       } catch (error) {
         console.error('Error al registrar:', error.message);
       }
+    },
+
+    switchToLogin() {
+      this.$router.replace('/login');
     }
   }
 };

@@ -6,7 +6,7 @@ const {
     getCitas,
     getCitasByAlumno,
     updateCita,
-} = require("../components/cita.component");
+} = require("../controllers/cita.controller");
 const verifySession = require("../middleware/verifySession");
 const { verifyAlumno, verifyMaestro } = require("../middleware/verifyType");
 const upload = multer();
@@ -15,5 +15,4 @@ router.get("/", verifySession, verifyMaestro, upload.none(), getCitas);
 router.get("/:id", verifySession, verifyAlumno, upload.none(), getCitasByAlumno);
 router.post("/:id", verifySession, verifyAlumno, upload.none(), updateCita);
 router.put("/", verifySession, verifyAlumno, upload.none(), citaRegistro);
-
 module.exports = router;

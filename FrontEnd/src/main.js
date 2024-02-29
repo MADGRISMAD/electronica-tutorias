@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue'
 import './index.css'
 import LoginComponent from './components/LoginComponent.vue';
-import RegisterComponent from './components/ResgisterComponent.vue';
+import RegisterComponent from './components/RegisterComponent.vue';
 import MainPage from './components/MainPage.vue';
 import FaqComponent from './components/FaqComponent.vue';
 
