@@ -129,6 +129,73 @@ async function deleteMaestro(numeroDeEmpleado) {
         .collection("maestros")
         .findOneAndDelete({ numeroDeEmpleado: numeroDeEmpleado });
 }
+
+async function createMaestro(data) {
+    return database.collection("maestros").insertOne(data);
+}
+async function getMaestros() {
+    return database.collection("maestros").find().toArray();
+}
+async function getMaestro(numeroDeControl) {
+    return database
+        .collection("maestros")
+        .findOne({ numeroDeControl: numeroDeControl });
+}
+
+async function updateMaestro(numeroDeControl, data) {
+    return database
+        .collection("maestros")
+        .findOneAndUpdate({ numeroDeControl: numeroDeControl }, data);
+}
+
+async function deleteMaestro(numeroDeControl) {
+    return database
+        .collection("maestros")
+        .findOneAndDelete({ numeroDeControl: numeroDeControl });
+}
+
+async function createClase(data) {
+    return database.collection("clases").insertOne(data);
+}
+
+async function getClases() {
+    return database.collection("clases").find().toArray();
+}
+
+async function getClase(id) {
+    return database.collection("clases").findOne({ _id: id });
+}
+
+async function updateClase(id, data) {
+    return database.collection("clases").findOneAndUpdate({ _id: id }, data);
+}
+
+async function deleteClase(id) {
+    return database.collection("clases").findOneAndDelete({ _id: id });
+}
+
+async function createAsignatura(data) {
+    return database.collection("asignaturas").insertOne(data);
+}
+
+async function getAsignaturas() {
+    return database.collection("asignaturas").find().toArray();
+}
+
+async function getAsignatura(id) {
+    return database.collection("asignaturas").findOne({ _id: id });
+}
+
+async function updateAsignatura(id, data) {
+    return database
+        .collection("asignaturas")
+        .findOneAndUpdate({ _id: id }, data);
+}
+
+async function deleteAsignatura(id) {
+    return database.collection("asignaturas").findOneAndDelete({ _id: id });
+}
+
 client.connect();
 // run().catch(console.dir);
 
@@ -150,4 +217,15 @@ module.exports = {
     getMaestro,
     updateMaestro,
     deleteMaestro,
+    createClase,
+    getClases,
+    getClase,
+    updateClase,
+    deleteClase,
+    createAsignatura,
+    getAsignaturas,
+    getAsignatura,
+    updateAsignatura,
+    deleteAsignatura,
+    
 };
