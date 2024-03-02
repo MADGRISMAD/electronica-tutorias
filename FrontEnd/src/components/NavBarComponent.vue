@@ -1,5 +1,6 @@
 <template>
     <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+        <!-- Navbar -->
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -45,7 +46,8 @@
                             </MenuButton>
                         </div>
                         <transition enter-active-class="transition ease-out duration-100"
-                            enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                            enter-from-class="transform opacity-0 scale-95"
+                            enter-to-class="transform opacity-100 scale-100"
                             leave-active-class="transition ease-in duration-75"
                             leave-from-class="transform opacity-100 scale-100"
                             leave-to-class="transform opacity-0 scale-95">
@@ -79,31 +81,34 @@
                 <a href="#"
                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Tutoring
                     Sessions</a>
-            <a href="#"
-                class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Academic
-                Progress</a>
-            <a href="#"
-                class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Academic
-                Resources</a>
-            <a href="#"
-                class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Events
-                & Deadlines</a>
-            <a href="#"
-                class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Feedback
-                & Surveys</a>
-        </div>
-    </DisclosurePanel>
-</Disclosure></template>
-  
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Academic
+                    Progress</a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Academic
+                    Resources</a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Events
+                    & Deadlines</a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Feedback
+                    & Surveys</a>
+            </div>
+        </DisclosurePanel>
+    </Disclosure>
+</template>
+
 <script setup>
 import { Disclosure, DisclosureButton, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
+  { name: 'Sesiones de Tutoría', href: '#', current: false },
+  { name: 'Progreso Académico', href: '#', current: false },
+  { name: 'Recursos Académicos', href: '#', current: false },
+  { name: 'Eventos y Fechas límite', href: '#', current: false },
+  { name: 'Comentarios y Encuestas', href: '#', current: false },
 ]
+
+
 </script>
-  
