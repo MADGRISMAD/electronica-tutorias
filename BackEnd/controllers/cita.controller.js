@@ -46,9 +46,20 @@ const updateCita = async (req, res, next) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+const deleteCita = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const cita = await CitaService.deleteCita(id);
+        return res.status(204).json(cita);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
 module.exports = {
     citaRegistro,
     getCitas,
     getCitasByAlumno,
     updateCita,
+    deleteCita,
 };
