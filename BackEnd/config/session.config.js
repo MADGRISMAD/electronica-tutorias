@@ -1,5 +1,6 @@
 const expressSession = require("express-session");
 const MemcachedStore = require("connect-memcached")(expressSession);
+const { v4: uuidv4 } = require("uuid");
 
 const sessionConfig = {
     resave: false,

@@ -7,7 +7,6 @@ const env = require("dotenv").config(
         : { path: "./.env.prod" }
 );
 const http = require("http");
-const { v4: uuidv4 } = require("uuid");
 // // DB SECTION
 // const dataOrigin = require('./db/mongodb');
 app.enable("trust proxy");
