@@ -1,38 +1,34 @@
 <template>
     <NavBarComponent />
     <div class="flex h-screen bg-gray-900 text-white">
-      <!-- Mostrar la retícula escolar -->
-      <div class="w-full p-4 overflow-x-auto">
-        <div class="flex flex-wrap">
-          <div
-            v-for="(semester, index) in semesters"
-            :key="index"
-            class="w-1/9 p-4 border border-gray-700"
-          >
-            <h2 class="text-lg font-semibold mb-2">Semestre {{ index + 1 }}</h2>
-            <div v-for="(subject, sIndex) in semester" :key="sIndex" class="mb-4">
-              <div class="bg-gray-800 p-4 rounded border border-gray-700">
-                <p class="text-lg font-semibold">{{ subject.name }}</p>
-                <p class="text-sm">Puntos: {{ Math.floor(Math.random() * 3) + 4 }}</p>
-              </div>
+        <!-- Mostrar la retícula escolar -->
+        <div class="w-full p-4 overflow-x-auto">
+            <div class="flex flex-wrap">
+                <div v-for="(semester, index) in semesters" :key="index" class="w-1/9 p-4 border border-gray-700">
+                    <h2 class="text-lg font-semibold mb-2">Semestre {{ index + 1 }}</h2>
+                    <div v-for="(subject, sIndex) in semester" :key="sIndex" class="mb-4">
+                        <div class="bg-gray-800 p-4 rounded border border-gray-700">
+                            <p class="text-lg font-semibold">{{ subject.name }}</p>
+                            <p class="text-sm">Puntos: {{ Math.floor(Math.random() * 3) + 4 }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </template>
-  
-  <script>
-  import NavBarComponent from './NavBarComponent.vue';
-  export default {
+</template>
+
+<script>
+import NavBarComponent from './NavBarComponent.vue';
+export default {
     components: {
-    NavBarComponent,
-  },
+        NavBarComponent,
+    },
     data() {
-      return {
-        semesters: [
-          // Agrega las materias del primer semestre aquí
-          [
+        return {
+            semesters: [
+                // Agrega las materias del primer semestre aquí
+                [
                     { name: 'Materia 1' },
                     { name: 'Materia 2' },
                     { name: 'Materia 3' },
@@ -104,15 +100,14 @@
                     { name: 'Materia 53' },
                     { name: 'Materia 54' }
                 ]
-          // Agrega las materias del segundo semestre aquí
-          // Repite el patrón para los siguientes semestres
-        ]
-      };
+                // Agrega las materias del segundo semestre aquí
+                // Repite el patrón para los siguientes semestres
+            ]
+        };
     }
-  };
-  </script>
-  
-  <style scoped>
-  /* Estilos para el componente */
-  </style>
-  
+};
+</script>
+
+<style scoped>
+/* Estilos para el componente */
+</style>
