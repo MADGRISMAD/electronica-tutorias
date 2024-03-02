@@ -1,4 +1,4 @@
-const {Asignatura:db} = require("../configuration/db.conf");
+const {Asignatura:db} = require("../config/db.conf");
 
 async function createAsignatura(data) {
     return db.createAsignatura(data);

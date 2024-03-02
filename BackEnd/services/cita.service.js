@@ -1,4 +1,4 @@
-const {Cita:db} = require("../configuration/db.conf");
+const {Cita:db} = require("../config/db.config");
 
 
 async function createCita(data, email = "") {

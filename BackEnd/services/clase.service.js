@@ -1,4 +1,4 @@
-const {Clase:db} = require("../configuration/db.conf");
+const {Clase:db} = require("../config/db.config");
 
 
 async function createClase(data) {

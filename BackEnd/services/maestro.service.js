@@ -1,4 +1,4 @@
-const {Maestro:db} = require("../configuration/db.conf");
+const {Maestro:db} = require("../config/db.config");
 
 async function createMaestro(data) {
     return db.createMaestro(data);

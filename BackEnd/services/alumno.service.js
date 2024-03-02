@@ -1,4 +1,4 @@
-const {Alumno:db} = require("../configuration/db.conf");
+const {Alumno:db} = require("../config/db.config");
 
 async function createAlumno(data) {
     return db.createAlumno(data);
