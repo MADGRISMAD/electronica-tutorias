@@ -1,6 +1,6 @@
 const nodecron = require("node-cron");
-const { sendMail } = require("../configuration/nodemailer.conf");
-const { getCitaByAlumno } = require("../db/mongodbProd");
+const { sendMail } = require("../config/nodemailer.config");
+const { getCitaByAlumno } = require("../services/cita.service");
 
 // Sends an email to the alumnos that has a cita in 30 minutes every 30 minutes from 6 to 22 from Monday to Saturday
 const sendMailToAlumnos = nodecron.schedule("*/30 6-22 * * 1-6", async function () {
