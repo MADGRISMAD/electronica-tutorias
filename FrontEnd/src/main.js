@@ -7,23 +7,14 @@ import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
 import MainPage from './components/MainPage.vue';
 import FaqComponent from './components/FaqComponent.vue';
+import KardexComponent from './components/KardexComponent.vue';
 
 const routes = [
-    { path: '/login',
-    name: 'login',
-    component: LoginComponent },
-    { path: '/register',
-    name:'register',
-    component: RegisterComponent },
-    { path: '/main',
-    name:'main',
-    component: MainPage },
-    { path: '/faq',
-    name: 'faq',
-    component: FaqComponent },
-    { path: '/',   
-    redirect: '/login' }
-    
+    { path: '/', component: LoginComponent },
+    { path: '/register', component: RegisterComponent },
+    { path: '/main', component: MainPage },
+    { path: '/faq', component: FaqComponent },
+    { path: '/kardex', component: KardexComponent },
 ]
 const router = createRouter({
     history: createWebHistory(),
